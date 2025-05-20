@@ -2,20 +2,18 @@
 This repository contains source codes presented in youtube channel [Exploring Odoo](https://www.youtube.com/@exploring-odoo)
 
 # Nuido Branch
-This branch is specific for Nuido related modules.
-
-Nuido is a library to create node based user interface for Odoo.
+This branch is specific for Nuido related modules. `Nuido` is a library to create node based user interface for Odoo.
 
 ## Core Concept
 Nuido's architecture is built around a set of core components and their associated models, providing the structure for creating diagrams and workflows. These components work together to manage visual representation, data, and connections within the application.
 
 ```mermaid
-graph TD  
-    Document --> Node["Node"]  
-    Document --> Edge["Edge"]  
-    Node --> Port["Port"]  
-    Edge --> Path["Path"]  
-    Edge --> Joint["Joint"]  
+graph TD
+    Document --- Node["Node"]
+    Document --- Edge["Edge"]
+    Node --- Port["Port"]
+    Edge --- Path["Path"]
+    Edge --- Joint["Joint"]
 ```
 
 Visit the [documentation](https://exploring-odoo.pages.dev) for more details or if you're a visual learner, visit [Exploring Odoo Youtube Channel](https://www.youtube.com/@exploring-odoo).
@@ -69,11 +67,10 @@ If you find this useful, consider giving the repo a star ⭐️ — it helps kee
 >
 
 >[!CAUTION]
-> _Please note that there are no upgrade/update paths for these modules. Any updates will not consider the previous version._
+> _Please note that there are no upgrade/update paths for these modules._
 >
-> _Therefore if you want to use the updated version, you'll most likely need to uninstall the previous version first or install it on a new Odoo installation._
+> _Any updates will not consider the previous version, therefore if you want to use the updated version, you'll most likely need to uninstall the previous version first or install it on a new Odoo installation._
 >
-> _Future updates will be community-driven. If this project adds value for you, a star helps prioritize ongoing development._
 
 # Experimental Odoo Modules
 
@@ -90,6 +87,7 @@ If you find this useful, consider giving the repo a star ⭐️ — it helps kee
 | Nuido Flow Messaging | nuido_flow_messaging | Messaging addon for Nuido Flow                             |
 | Nuido Flow Trigger   | nuido_flow_trigger   | Runs Nuido Flow with triggers.                             |
 | Nuido Flow Data      | nuido_flow_data      | Nuido Flow nodes for handling Odoo data.                   |
+| Nuido Flow AI        | nuido_flow_ai        | AI nodes for Nuido Flow.                                   |
 
 # Contributing
 As mentioned above, this repo is only for archiving purpose, i.e., for reference, to learn Odoo, or as proof of concepts.
@@ -99,3 +97,5 @@ You are more than welcome to open discussion to share your thoughts, ideas, expe
 
 And it'll be great if you can give a star and share this repo to others.
 
+# Special Thanks
+[![Stargazers repo roster for @yonitjio/exploring-odoo](https://reporoster.com/stars/dark/yonitjio/exploring-odoo)](https://github.com/yonitjio/exploring-odoo/stargazers)

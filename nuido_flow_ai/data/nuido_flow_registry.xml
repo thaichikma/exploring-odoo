@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!--
+THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
+
+This software is released under the MIT License.
+https://opensource.org/licenses/MIT
+
+THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
+DO NOT USE IT IN PRODUCTION.
+-->
+<odoo>
+    <data>
+        <!-- Simple AI -->
+        <record id="build_function_simple_ai_node" model="nuido_base.registry">
+            <field name="category">Build Function</field>
+            <field name="key">SimpleAiNode</field>
+            <field name="value">nuido_flow_ai.flows.node_info,build_simple_ai_node</field>
+        </record>
+        <record id="create_function_simple_ai_node" model="nuido_base.registry">
+            <field name="category">Create Function</field>
+            <field name="key">SimpleAiNode</field>
+            <field name="value">nuido_flow_ai.flows.node_info,create_simple_ai_node</field>
+        </record>
+    </data>
+</odoo>
