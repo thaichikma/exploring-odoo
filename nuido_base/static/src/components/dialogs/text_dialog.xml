@@ -13,7 +13,7 @@ DO NOT USE IT IN PRODUCTION.
 <t t-name="nuido_base.text-dialog">
     <Dialog title="props.title">
         <div>
-            <textarea rows="25" t-model="state.text"></textarea>
+            <textarea rows="25" t-model="state.text" spellcheck="false"></textarea>
         </div>
         <t t-set-slot="footer">
             <button class="btn btn-primary" t-on-click="onClickApply">

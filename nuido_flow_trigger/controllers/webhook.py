@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 import logging
@@ -24,21 +24,30 @@ def get_webhook_request_payload():
     return payload
 
 class NuidoWebhookController(Controller):
-
     @route(['/nuido/webhook/<string:hook_id>'], type='http', auth='public', methods=['POST'], csrf=False, save_session=False)
     def nuido_webhook(self, hook_id, **kwargs):
         """ Execute an automation webhook """
-        node_def = request.env['nuido_flow.node.definition'].sudo().search([('trigger_webhook_id', '=', hook_id)])
-        if not node_def:
+        node_definition = request.env['nuido_flow.node.definition'].sudo().search([('trigger_webhook_id', '=', hook_id)])
+        if not node_definition:
             return request.make_json_response({'status': 'error'}, status=404)
 
-        data = get_webhook_request_payload()
+        payload = get_webhook_request_payload()
         try:
-            node_def.run(data)
+            context = {
+                "uid": node_definition.create_uid.id,
+                "user": node_definition.create_uid,
+                "is_debug": node_definition.create_uid.has_group('base.group_no_one'),
+                "active_node_definition_id": node_definition.id,
+                "payload": payload
+            }
+
+            node_definition.with_context(**context).run(payload)
         except Unauthorized:
             _logger.warning("Unauthorized access.", exc_info=True)
-            return request.make_json_response({'status': 'error'}, status=401)
+            # return request.make_json_response({'status': 'error'}, status=401)
+            raise
         except:
             _logger.warning("Exception running flow.", exc_info=True)
-            return request.make_json_response({'status': 'error'}, status=500)
+            # return request.make_json_response({'status': 'error'}, status=500)
+            raise
         return request.make_json_response({'status': 'ok'}, status=200)

@@ -1,14 +1,18 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
 from odoo.tools import safe_eval
+from odoo.tools.safe_eval import wrap_module
+
 from odoo.addons.nuido_base.tools.function_tool import create_object
 from ..core.base_node import FlowNode
+
+html = wrap_module(__import__('html'), ['escape'])
 
 def run_nodes(env, create_function_registry, definitions, start_node_def, start_params):
     node: FlowNode | None = create_object(env, create_function_registry, definitions, start_node_def["type"], start_node_def)
@@ -35,11 +39,16 @@ def get_default_context_for_eval(env):
         'json': safe_eval.json,
         'uid': env.uid,
         'user': env.user,
+        'html': html
     }
     if "start_params" in env.context:
         context['start_params'] = env.context["start_params"]
     if "run_params" in env.context:
         context['run_params'] = env.context["run_params"]
+    if "payload" in env.context:
+        context['payload'] = env.context["payload"]
+    if "active_node_definition_id" in env.context:
+        context['active_node_definition_id'] = env.context["active_node_definition_id"]
 
     return context
 
@@ -54,5 +63,8 @@ def get_active_record_info(env):
 
     if "active_model" in env.context:
         info["active_model"] = env.context["active_model"]
+
+    if "active_model" in env.context and "active_id" in env.context:
+        info["active_record"] = env[env.context["active_model"]].browse(env.context["active_id"])
 
     return info

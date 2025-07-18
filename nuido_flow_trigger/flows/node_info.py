@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -42,7 +42,7 @@ def build_on_edit_trigger_node(node, edges):
     info = getDefaultInfo(node, edges)
     info["model"] = node["model"]
     info["model_description"] = node["model_description"]
-    info["field"] = node["field"]
+    info["fields"] = node["fields"]
 
     return info
 

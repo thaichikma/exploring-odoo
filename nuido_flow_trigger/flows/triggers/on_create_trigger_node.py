@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -11,6 +11,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 from odoo import api
+from odoo.tools import frozendict
 
 from .record_trigger_node import RecordTriggerNode
 
@@ -27,18 +28,19 @@ class OnCreateTriggerNode(RecordTriggerNode):
                     return create.origin(self, vals_list, **kw)
 
                 records = create.origin(self.with_env(node_definitions.env), vals_list, **kw)
-                context = {
-                    'active_model': records._name,
-                    'active_ids': records.ids,
-                    'active_id': records.id,
-                    'is_debug': self.env.user.has_group('base.group_no_one')
-                }
                 for node_def in node_definitions:
-                    context.update({
-                            "active_node_definition_id": node_def.id,
-                        })
-                    node_def.with_context(**context).run({})
-                return records.with_env(self.env)
+                    for record in records:
+                        context = {
+                            'active_model': record._name,
+                            'active_record': record,
+                            'active_ids': record.ids,
+                            'active_id': record.id,
+                            'is_debug': self.env.user.has_group('base.group_no_one'),
+                            'active_node_definition_id': node_def.id,
+                        }
+                        node_def.with_context(**context).run({})
+
+                return records.with_context(node_definition_ids=node_definitions.ids).with_env(self.env)
 
             return create
 

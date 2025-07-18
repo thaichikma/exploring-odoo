@@ -17,15 +17,17 @@ DO NOT USE IT IN PRODUCTION.
             <field name="arch" type="xml">
                 <xpath expr="//notebook[@id='nuido_flow_notebook']" position="inside">
                     <page name="trigger_definition" string="Trigger Definition">
-                        <field name="trigger_definition" readonly="1" force_save="1"/>
+                        <group>
+                            <field name="trigger_definition" readonly="1" force_save="1"/>
 
-                        <field name="trigger_model_id" readonly="1" force_save="1"/>
-                        <field name="trigger_field_id" readonly="1" force_save="1"/>
+                            <field name="trigger_model_id" readonly="1" force_save="1"/>
+                            <field name="trigger_field_ids" readonly="1" force_save="1"/>
 
-                        <field name="trigger_interval" readonly="1" force_save="1"/>
-                        <field name="trigger_interval_type" readonly="1" force_save="1"/>
+                            <field name="trigger_interval" readonly="1" force_save="1"/>
+                            <field name="trigger_interval_type" readonly="1" force_save="1"/>
 
-                        <field name="trigger_last_run" readonly="1" force_save="1"/>
+                            <field name="trigger_last_run" readonly="1" force_save="1"/>
+                        </group>
                     </page>
                 </xpath>
             </field>

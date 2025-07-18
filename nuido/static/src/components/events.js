@@ -17,9 +17,11 @@ export const EdgeTypeEventType = "/edge-type";
 export var NewEdgeEventType;
 (function (NewEdgeEventType) {
     NewEdgeEventType["start"] = "/edge-start";
-    NewEdgeEventType["complete"] = "/edge-complete";
+    NewEdgeEventType["end"] = "/edge-end";
 })(NewEdgeEventType || (NewEdgeEventType = {}));
 ;
+export const EdgeCompletedEventType = "/edge-completed";
+export const RemoveEdgeEventType = "/edge-remove";
 export var DocumentEventType;
 (function (DocumentEventType) {
     DocumentEventType["new"] = "/new";

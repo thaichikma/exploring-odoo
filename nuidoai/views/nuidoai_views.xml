@@ -72,7 +72,7 @@ DO NOT USE IT IN PRODUCTION.
             <field name="view_id" ref="nuidoai.nuidoai_node_definition_list"/>
         </record>
 
-        <menuitem name="Nuido AI" id="nuidoai.app_menu" />
+        <menuitem name="Nuido AI" id="nuidoai.app_menu" web_icon="nuidoai,static/description/icon.png"/>
 
         <menuitem name="Node Definition" id="nuidoai.menu_doc_ref_links" parent="nuidoai.app_menu" sequence="1"
             action="nuidoai.action_nuidoai_node_definition" />

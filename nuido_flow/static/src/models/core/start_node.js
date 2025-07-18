@@ -8,7 +8,7 @@
 import { Default } from "@nuido/utils/registry";
 import { StarterPort } from "@nuido_flow/components/ports/starter_port";
 import { TriggerPort } from "@nuido_flow/components/ports/trigger_port";
-import { SpecAwareNodeModel } from "@nuido_flow/models/core/spec_aware_node";
+import { SpecAwareNodeModel } from "@nuido/models/spec_aware_node";
 export class StartNodeModel extends SpecAwareNodeModel {
     setup() {
         const triggerId = "trigger-" + this.id + "-1";

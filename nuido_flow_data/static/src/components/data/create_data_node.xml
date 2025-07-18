@@ -54,7 +54,7 @@ DO NOT USE IT IN PRODUCTION.
                             <td><t t-out="field.name"/></td>
                             <td><t t-out="field.value"/></td>
                             <td>
-                                <button class="btn m-0 p-0" t-on-click.stop.prevent="() => { this.onRemoveField(field.name) }">
+                                <button class="btn m-0 p-0" t-on-click.stop.prevent="() => { this.onRemoveField(field. name) }">
                                     <i class="fa fa-minus"/>
                                 </button>
                             </td>

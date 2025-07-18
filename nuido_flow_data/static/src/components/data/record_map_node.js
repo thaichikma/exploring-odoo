@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { useState } from "@odoo/owl";
@@ -34,10 +34,10 @@ export class RecordMapNode extends Node {
         return `input-${this.props.node.id}-model-selector`;
     }
     onModelSelected(model) {
-        const { label, technical } = model;
-        this.state.model = technical;
+        const { label, technical: value } = model;
+        this.state.model = value;
         this.state.modelDescription = label;
-        this.props.node.model = technical;
+        this.props.node.model = value;
         this.props.node.model_description = label;
         this.state.recordId = -1;
         this.state.recordName = "";

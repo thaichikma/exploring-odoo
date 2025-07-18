@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -38,11 +38,12 @@ class ArchiveDataNode(BaseNode):
             ids = [ids]
 
         model = self.definition["model"]
-        count = self.env[model].search_count([("id", "in", ids)])
+        res = self.env[model]
+        count = res.search_count([("id", "in", ids)])
         if count > 0:
-            records = self.env[model].browse(ids)
-            records.action_archive()
+            res = self.env[model].browse(ids)
+            res.action_archive()
 
-            return records
-
-        return self.env[model]
+        return {
+            "result": res
+        }

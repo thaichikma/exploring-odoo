@@ -12,8 +12,8 @@ DO NOT USE IT IN PRODUCTION.
     <t t-name="nuido_flow_data.reference-map-node" t-inherit="nuido.node" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('node-content')]" position="inside">
             <div class="mb-2">
-                <label t-attf-id="label-{{props.node.id}}-tag" t-attf-for="text-{{props.node.id}}-ref-key">Source Key</label>
-                <input t-attf-id="text-{{props.node.id}}-ref-key" type="text" t-model="props.node.reference_key"></input>
+                <TextInputDialogInput id="props.node.id" label="'Reference'" value="props.node.reference"
+                    onChanged.bind="onReferenceChanged"/>
             </div>
             <div class="mb-2">
                 <label t-attf-id="label-{{props.node.id}}-model-selector" t-att-for="modelSelectorId">Model</label>

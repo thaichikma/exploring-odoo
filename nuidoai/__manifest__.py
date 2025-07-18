@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -27,7 +27,6 @@
         "web.assets_backend": [
             "nuidoai/static/src/views/**/*",
             "nuidoai/static/src/chat/**/*",
-            "nuidoai/static/src/utils/**/*",
             "nuidoai/static/src/components/**/*",
             "nuidoai/static/src/models/**/*",
             "nuidoai/static/src/app/**/*",

@@ -38,5 +38,6 @@ $nuido-path-color: $gray-700 !default;
 $nuido-path-hover-color: $gray-500 !default;
 $nuido-path-selected-color: $o-brand-primary !default;
 
-$nuido-joint-border-color: $gray-500 !default;
+$nuido-joint-border-color: $nuido-node-border-color !default;
+$nuido-joint-border-selected-color: $o-brand-primary !default;
 $nuido-joint-background-color: $gray-800 !default;

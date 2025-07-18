@@ -41,8 +41,7 @@ class NotifyNode(BaseNode):
                     _logger.warning("Exception while rendering: %s", self.definition["template"], exc_info=True)
                     msg = "Empty message received."
 
-            uid = self.env.context["uid"]
-            user = self.env["res.users"].search([("id", "=", uid)])
+            user = self.env.context["user"]
             user._bus_send('simple_notification_ex', {
                 'type': 'info',
                 'title': "Information",

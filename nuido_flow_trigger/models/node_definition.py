@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -13,7 +13,7 @@ import json
 import traceback
 from collections import defaultdict
 
-from odoo import models, fields
+from odoo import models, fields, Command
 
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -50,10 +50,10 @@ class NodeDefinition(models.Model):
     trigger_model_name = fields.Char(related="trigger_model_id.model", string="Model Name",
             readonly=True, inverse="_inverse_trigger_model_name")
 
-    trigger_field_id = fields.Many2one("ir.model.fields", string="Model",
+    trigger_field_ids = fields.Many2many("ir.model.fields", string="Fields",
             domain="[('model_id', '=?', trigger_model_id)]")
-    trigger_field_name = fields.Char(related="trigger_field_id.name", string="Field Name",
-            readonly=True, inverse="_inverse_trigger_field_name")
+    trigger_field_names = fields.Char(string="Field Names",
+            readonly=True, store=True, inverse="_inverse_trigger_field_names")
 
     trigger_interval = fields.Integer("Interval")
     trigger_interval_type = fields.Selection(string="Interval Type", selection=[
@@ -73,9 +73,19 @@ class NodeDefinition(models.Model):
         for rec in self:
             rec.trigger_model_id = self.env["ir.model"]._get(rec.trigger_model_name)
 
-    def _inverse_trigger_field_name(self):
+    def _inverse_trigger_field_names(self):
         for rec in self:
-            rec.trigger_field_id = self.env["ir.model.fields"]._get(rec.trigger_model_name, rec.trigger_field_name)
+            if rec.trigger_model_name:
+                trigger_field_names = json.loads(rec.trigger_field_names)
+                commands = [Command.clear()]
+                if len(trigger_field_names) > 0:
+                    for field_name in trigger_field_names:
+                        field_id = self.env["ir.model.fields"]._get(rec.trigger_model_name, field_name["value"])
+                        commands.append(Command.link(field_id.id))
+
+                rec.trigger_field_ids = commands
+            else:
+                rec.trigger_field_ids = None
 
     def _get_trigger_node(self, rec):
         trigger_node = None
@@ -88,8 +98,10 @@ class NodeDefinition(models.Model):
         if (node_def is not None):
             trigger_node_def = next((
                         o for o in definitions if (
-                            o["type"].endswith("TriggerNode")
+                            len(o["next_nodes"]) > 0
                             and o["next_nodes"][0]["id"] == node_def["id"]
+                            and "role" in o["next_nodes"][0]["spec"]
+                            and o["next_nodes"][0]["spec"]["role"] == "trigger"
                         )
                     ), None
                 )
@@ -111,8 +123,8 @@ class NodeDefinition(models.Model):
             vals["trigger_method"] = None
             vals["trigger_model_id"] = None
             vals["trigger_model_name"] = None
-            vals["trigger_field_id"] = None
-            vals["trigger_field_name"] = None
+            vals["trigger_field_ids"] = None
+            vals["trigger_field_names"] = None
             vals["trigger_interval"] = None
             vals["trigger_interval_type"] = None
             vals["is_processed"] = False
@@ -165,6 +177,9 @@ class NodeDefinition(models.Model):
 
         return res
 
+    def _before_process_trigger_node(self, rec, trigger_definition, trigger_node):
+        pass
+
     def _process_record(self, rec):
         super()._process_record(rec)
         trigger_definition, trigger_node = self._get_trigger_node(rec)
@@ -176,8 +191,8 @@ class NodeDefinition(models.Model):
                 rec.trigger_model_name = trigger_node.definition["model"]
 
                 if trigger_node.TRIGGER_METHOD_NAME == "write":
-                    if "field" in trigger_node.definition and trigger_node.definition["field"] != "":
-                        rec.trigger_field_name = trigger_node.definition["field"]
+                    if "fields" in trigger_node.definition and len(trigger_node.definition["fields"]) > 0:
+                        rec.trigger_field_names = json.dumps(trigger_node.definition["fields"])
 
             elif trigger_node.TRIGGER_METHOD_NAME in SCHEDULE_TRIGGERS:
                 rec.trigger_interval = trigger_node.definition["interval"]
@@ -186,7 +201,10 @@ class NodeDefinition(models.Model):
             elif trigger_node.TRIGGER_METHOD_NAME in WEBHOOK_TRIGGERS:
                 rec.trigger_webhook_id = trigger_node.definition["webhook_id"]
 
+            self._before_process_trigger_node(rec, trigger_definition, trigger_node)
             trigger_node.process(rec)
+
+            return trigger_definition, trigger_node
 
     def _get_node_definition(self, records, trigger_method, trigger_field = None):
         domain = [('trigger_model_name', '=', records._name), ('trigger_method', '=', trigger_method)]
@@ -237,6 +255,7 @@ class NodeDefinition(models.Model):
                 try:
                     context = {
                         "uid": node_definition.create_uid.id,
+                        "user": node_definition.create_uid,
                         "is_debug": node_definition.create_uid.has_group('base.group_no_one'),
                         "active_node_definition_id": node_definition.id,
                     }

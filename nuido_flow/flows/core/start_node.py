@@ -13,8 +13,6 @@ _logger = logging.getLogger(__name__)
 
 from .base_node import BaseNode
 
-from odoo.tools import safe_eval
-
 class StartNode(BaseNode):
     def process(self, params):
         super().process(params)

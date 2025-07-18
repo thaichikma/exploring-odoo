@@ -116,14 +116,14 @@ export class EdgeModel {
     moveJoint(id, x, y) {
         const joint = this.joints.find(o => o.id == id);
         if (joint) {
-            joint.vprops.cX = x;
-            joint.vprops.cY = y;
+            joint.vprops.cX = joint.vprops.cX + x;
+            joint.vprops.cY = joint.vprops.cY + y;
             const startPath = this.paths.find(o => o.id == joint.startPathId);
-            startPath.vprops.endX = x;
-            startPath.vprops.endY = y;
+            startPath.vprops.endX = joint.vprops.cX;
+            startPath.vprops.endY = joint.vprops.cY;
             const endPath = this.paths.find(o => o.id == joint.endPathId);
-            endPath.vprops.startX = x;
-            endPath.vprops.startY = y;
+            endPath.vprops.startX = joint.vprops.cX;
+            endPath.vprops.startY = joint.vprops.cY;
         }
     }
 }

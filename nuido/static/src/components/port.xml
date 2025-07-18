@@ -12,7 +12,8 @@ DO NOT USE IT IN PRODUCTION.
     <t t-name="nuido.port">
         <div t-ref="root" t-att-id="props.port.id"
             t-att-class="cssClass"
-            t-on-mousedown.stop.prevent="onMouseDown" t-on-mouseup.stop.prevent="onMouseUp" >
+            t-on-mousedown.stop.prevent="onMouseDown" t-on-mouseup.stop.prevent="onMouseUp" 
+                t-on-contextmenu.stop.prevent="onContextMenu" >
         </div>
     </t>
 </templates>

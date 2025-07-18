@@ -218,4 +218,18 @@ export class NodeModel {
             port.clearLinks();
         });
     }
+    getAuxInputEdges() {
+        let res = [];
+        this.auxInPorts.forEach(port => {
+            res = res.concat(port.links);
+        });
+        return res;
+    }
+    getAuxOutputEdges() {
+        let res = [];
+        this.auxOutPorts.forEach(port => {
+            res = res.concat(port.links);
+        });
+        return res;
+    }
 }

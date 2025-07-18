@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -22,17 +22,17 @@ class OnDeleteTriggerNode(RecordTriggerNode):
                 node_definitions = self.env['nuido_flow.node.definition']._get_node_definition(self, OnDeleteTriggerNode.TRIGGER_METHOD_NAME)
                 if node_definitions:
                     records = self.with_env(node_definitions.env)
-                    context = {
-                        'active_model': records._name,
-                        'active_ids': records.ids,
-                        'active_id': records.id,
-                        'is_debug': self.env.user.has_group('base.group_no_one')
-                    }
                     for node_def in node_definitions:
-                        context.update({
+                        for record in records:
+                            context = {
+                                'active_model': record._name,
+                                'active_record': record,
+                                'active_ids': record.ids,
+                                'active_id': record.id,
+                                'is_debug': self.env.user.has_group('base.group_no_one'),
                                 "active_node_definition_id": node_def.id,
-                            })
-                        node_def.with_context(**context).run({})
+                            }
+                            node_def.with_context(**context).run({})
 
                 return unlink.origin(self, **kwargs)
 

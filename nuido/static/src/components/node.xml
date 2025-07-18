@@ -26,7 +26,7 @@ DO NOT USE IT IN PRODUCTION.
                     </div>
                     <div class="node-title">
                         <img t-att-src="props.node.icon" class="node-icon me-2 pb-1"/>
-                        <span><t t-out="props.node.title"/></span>
+                        <span class="node-title-text"><t t-out="props.node.title"/></span>
                     </div>
                     <div class="node-content">
                     </div>

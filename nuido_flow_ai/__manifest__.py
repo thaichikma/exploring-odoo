@@ -14,15 +14,16 @@
     "author": "Yoni Tjio",
     "category": "Productivity",
     "version": "18.0.1.0.0",
-    "depends": ["sale", "nuido_flow"],
+    "depends": ["nuido_flow", "nuido_flow_trigger", "nuido_flow_data"],
     "data": [
-            "data/nuido_flow_registry.xml"
+            "data/nuido_flow_registry.xml",
         ],
     "assets": {
         "web.assets_backend": [
             "nuido_flow_ai/static/src/components/**/*",
             "nuido_flow_ai/static/src/models/**/*",
             "nuido_flow_ai/static/src/app/**/*",
+            ('remove', 'nuido_flow_ai/static/src/**/*.dark.scss')
         ],
     },
     "license": "Other proprietary",

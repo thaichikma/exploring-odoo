@@ -27,32 +27,33 @@ import { MapperNodeModel } from "@nuido_flow/models/core/mapper_node";
 import { StarterPort } from "@nuido_flow/components/ports/starter_port";
 import { StarterPortModel } from "@nuido_flow/models/ports/starter_port";
 // Core Nodes
-registry.category(NuidoNodeRegistryName).add(StartNode.name, {
+const nuidoNodeRegistry = registry.category(NuidoNodeRegistryName);
+nuidoNodeRegistry.add(StartNode.name, {
     component: StartNode,
     model: StartNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(LogNode.name, {
+nuidoNodeRegistry.add(LogNode.name, {
     component: LogNode,
     model: LogNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(ConditionalNode.name, {
+nuidoNodeRegistry.add(ConditionalNode.name, {
     component: ConditionalNode,
     model: ConditionalNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(SpreadNode.name, {
+nuidoNodeRegistry.add(SpreadNode.name, {
     component: SpreadNode,
     model: SpreadNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(MergeNode.name, {
+nuidoNodeRegistry.add(MergeNode.name, {
     component: MergeNode,
     model: MergeNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(MapperNode.name, {
+nuidoNodeRegistry.add(MapperNode.name, {
     component: MapperNode,
     model: MapperNodeModel
 });
 // Misc. Nodes
-registry.category(NuidoNodeRegistryName).add(RandomNumberNode.name, {
+nuidoNodeRegistry.add(RandomNumberNode.name, {
     component: RandomNumberNode,
     model: RandomNumberNodeModel
 });

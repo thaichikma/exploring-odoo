@@ -28,8 +28,9 @@ DO NOT USE IT IN PRODUCTION.
                     <t t-slot="before_doc"/>
                     <t t-foreach="documents" t-as="doc" t-key="doc_index">
                         <t t-if="doc.id + '-' + doc.sessionId == currentDocSessionId">
-                            <div class="nuido-doc-container h-100 w-100" t-on-wheel.prevent="onWheel"
-                                t-on-mousedown="onHandleMouseDown" t-on-dblclick="clearSelection" >
+                            <div class="nuido-doc-container h-100 w-100" t-on-wheel="onWheel"
+                                t-on-mousedown="onHandleMouseDown" t-on-dblclick="clearSelection"
+                                t-on-contextmenu="onContextMenu">
                                     <Document document="doc" />
                             </div>
                         </t>

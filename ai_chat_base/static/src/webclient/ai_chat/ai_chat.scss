@@ -12,6 +12,15 @@
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     scroll-snap-type: y proximity;
+
+    & *{
+        overflow-anchor: none;
+    }
+
+    & .ai-chat-messages-anchor {
+        overflow-anchor: auto;
+        height: 1px;
+    }
 }
 
 .ai-chat-message {
@@ -22,7 +31,6 @@
     display: flex;
     align-items: flex-end;
     margin-bottom: 10px;
-    scroll-snap-align: end;
 }
 
 .ai-chat-message:last-of-type {

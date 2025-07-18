@@ -15,6 +15,7 @@ export var SelectionType;
 (function (SelectionType) {
     SelectionType["node"] = "node";
     SelectionType["edge"] = "edge";
+    SelectionType["joint"] = "joint";
 })(SelectionType || (SelectionType = {}));
 export class DocumentModel {
     id;
@@ -145,7 +146,7 @@ export class DocumentModel {
         }
         return undefined;
     }
-    _prepareEdge(id, edgeType, portId, nodeId, x, y) {
+    _startEdge(id, edgeType, portId, nodeId, x, y) {
         const edgeRegistry = registry.category(NuidoEdgeRegistryName).get(edgeType);
         if (edgeRegistry && edgeRegistry.model) {
             const edge = new edgeRegistry.model(id, edgeType, x, y, x, y, null, null, portId, nodeId);
@@ -153,13 +154,13 @@ export class DocumentModel {
         }
         return undefined;
     }
-    prepareEdge(id, edgeType, portId, nodeId, x, y) {
+    startEdge(id, edgeType, portId, nodeId, x, y) {
         this.clearSelected();
         const node = this.nodes.find(o => o.id === nodeId);
         const port = node.outPorts.find(p => p.id === portId);
         const auxPort = node.auxOutPorts.find(p => p.id === portId);
         if ((port && node.canAddOutput(portId) || (auxPort && node.canAddAuxOut(portId)))) {
-            this.newEdge = this._prepareEdge(id, edgeType, portId, nodeId, x, y);
+            this.newEdge = this._startEdge(id, edgeType, portId, nodeId, x, y);
             return this.newEdge;
         }
         return null;
@@ -167,7 +168,7 @@ export class DocumentModel {
     updateNewEdge(x, y) {
         this.newEdge.updateEndPos(x, y);
     }
-    completeEdge(portId, nodeId, x, y) {
+    endEdge(portId, nodeId, x, y) {
         if (this.newEdge !== undefined) {
             const edge = this.newEdge;
             const outNode = this.nodes.find(o => o.id === edge.outNodeId);
@@ -201,6 +202,7 @@ export class DocumentModel {
                     }
                 }
             }
+            return edge;
         }
     }
     clearNewEdge() {

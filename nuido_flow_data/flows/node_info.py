@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -11,13 +11,14 @@ from ..flows.data import data_group_node
 from ..flows.data import active_data_node
 from ..flows.data import update_active_data_node
 from ..flows.data import record_map_node
-from ..flows.data import send_data_node
 from ..flows.data import browse_data_node
 from ..flows.data import update_data_node
 from ..flows.data import create_data_node as create_data_node_module
 from ..flows.data import reference_map_node
 from ..flows.data import lookup_node
 from ..flows.data import archive_data_node
+from ..flows.data import dynamic_date_filter_node
+from ..flows.data import action_node
 
 from ..flows.starter import custom_field_starter_node
 
@@ -31,8 +32,6 @@ def build_data_node(node, edges):
     info["model"] = node["model"]
     info["fields"] = node["fields"]
     info["domain"] = node["domain"]
-    info["dynamic_date_field"] = node["dynamic_date_field"]
-    info["dynamic_date_interval"] = node["dynamic_date_interval"]
 
     return info
 
@@ -50,8 +49,6 @@ def build_data_group_node(node, edges):
     info["group_field"] = node["group_field"]
     info["datetime_granularity"] = node["datetime_granularity"]
     info["list_row_limit"] = node["list_row_limit"]
-    info["dynamic_date_field"] = node["dynamic_date_field"]
-    info["dynamic_date_interval"] = node["dynamic_date_interval"]
     info["output_type"] = node["output_type"]
 
     return info
@@ -93,17 +90,6 @@ def build_record_map_node(node, edges):
 
 def create_record_map_node(environment, create_function_registry, definitions, definition):
     return record_map_node.RecordMapNode(environment, create_function_registry, definitions, definition)
-
-# Send Data
-def build_send_data_node(node, edges):
-    info = getDefaultInfo(node, edges)
-    info["method"] = node["method"]
-    info["url"] = node["url"]
-
-    return info
-
-def create_send_data_node(environment, create_function_registry, definitions, definition):
-    return send_data_node.SendDataNode(environment, create_function_registry, definitions, definition)
 
 # Browse Data
 def build_browse_data_node(node, edges):
@@ -156,7 +142,7 @@ def create_create_data_node(environment, create_function_registry, definitions, 
 # Reference Map
 def build_reference_map_node(node, edges):
     info = getDefaultInfo(node, edges)
-    info["reference_key"] = node["reference_key"]
+    info["reference"] = node["reference"]
     info["model"] = node["model"]
     info["field"] = node["field"]
 
@@ -188,4 +174,28 @@ def build_archive_data_node(node, edges):
 
 def create_archive_data_node(environment, create_function_registry, definitions, definition):
     return archive_data_node.ArchiveDataNode(environment, create_function_registry, definitions, definition)
+
+# Dynamic Date Filter
+def build_dynamic_date_filter_node(node, edges):
+    info = getDefaultInfo(node, edges)
+    info["model"] = node["model"]
+    info["dynamic_date_field"] = node["dynamic_date_field"]
+    info["dynamic_date_interval"] = node["dynamic_date_interval"]
+
+    return info
+
+def create_dynamic_date_filter_node(environment, create_function_registry, definitions, definition):
+    return dynamic_date_filter_node.DynamicDateFilterNode(environment, create_function_registry, definitions, definition)
+
+# Action
+def build_action_node(node, edges):
+    info = getDefaultInfo(node, edges)
+    info["ids"] = node["ids"]
+    info["model"] = node["model"]
+    info["action"] = node["action"]
+
+    return info
+
+def create_action_node(environment, create_function_registry, definitions, definition):
+    return action_node.ActionNode(environment, create_function_registry, definitions, definition)
 

@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { registry } from "@web/core/registry";
@@ -15,15 +15,16 @@ import { MessageNodeModel } from "@nuido_flow_messaging/models/messaging/message
 import { MailNode } from "@nuido_flow_messaging/components/messaging/mail_node";
 import { MailNodeModel } from "@nuido_flow_messaging/models/messaging/mail_node";
 // Odoo Nodes
-registry.category(NuidoNodeRegistryName).add(NotifyNode.name, {
+const nuidoNodeRegistry = registry.category(NuidoNodeRegistryName);
+nuidoNodeRegistry.add(NotifyNode.name, {
     component: NotifyNode,
     model: NotifyNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(MessageNode.name, {
+nuidoNodeRegistry.add(MessageNode.name, {
     component: MessageNode,
     model: MessageNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(MailNode.name, {
+nuidoNodeRegistry.add(MailNode.name, {
     component: MailNode,
     model: MailNodeModel
 });

@@ -12,8 +12,8 @@ DO NOT USE IT IN PRODUCTION.
     <t t-name="nuido_flow_data.update-data-node" t-inherit="nuido.node" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('node-content')]" position="inside">
             <div class="mb-2">
-                <label t-attf-id="label-{{props.node.id}}-ids" t-attf-for="text-{{props.node.id}}-ids">Id(s)</label>
-                <input t-attf-id="text-{{props.node.id}}-ids" type="text" t-model="props.node.ids"></input>
+                <TextInputDialogInput id="props.node.id" label="'Id(s)'" value="props.node.ids"
+                    onChanged.bind="onIdsChanged"/>
             </div>
             <div class="mb-2">
                 <label t-attf-id="label-{{props.node.id}}-model-selector" t-att-for="modelSelectorId">Model</label>

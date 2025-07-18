@@ -71,7 +71,8 @@ export class NuidoUi extends Component {
             w: 0,
             h: 0,
             nodeElements: [],
-            pathElements: []
+            pathElements: [],
+            jointElements: []
         });
         this.startSelectionRect = {
             x: 0,
@@ -129,6 +130,7 @@ export class NuidoUi extends Component {
             const nuidoDocEl = document.getElementsByClassName("nuido-doc")[0];
             const nodeEls = nuidoDocEl.getElementsByClassName("node");
             const pathEls = nuidoDocEl.getElementsByClassName("path");
+            const jointEls = nuidoDocEl.getElementsByClassName("joint");
             const pos = {
                 x: event.x,
                 y: event.y,
@@ -141,37 +143,69 @@ export class NuidoUi extends Component {
                 y: event.y,
                 nodeElements: nodeEls,
                 pathElements: pathEls,
+                jointElements: jointEls
             };
             Object.assign(this.startSelectionRect, pos);
             Object.assign(this.selectionState, sel, pos);
         }
     }
-    onMouseMove(event) {
-        if (event.ctrlKey) {
-            event.stopPropagation();
-            event.preventDefault();
-            if (this.lastPointerPos) {
-                if (this.isMoving || Math.hypot(event.x - this.lastPointerPos.x, event.y - this.lastPointerPos.y) >= 20) {
-                    document.documentElement.style.cursor = "move";
-                    this.state.env.ui.translateX = this.state.env.ui.translateX + event.movementX;
-                    this.state.env.ui.translateY = this.state.env.ui.translateY + event.movementY;
-                    const doc = document.querySelector(".nuido-doc");
-                    doc.style.transform =
-                        "translate(" +
-                            this.state.env.ui.translateX +
-                            "px, " +
-                            this.state.env.ui.translateY +
-                            "px) scale(" +
-                            this.state.env.ui.zoom +
-                            ")";
-                    this.isMoving = true;
-                }
+    _toggleSelections(elements, selectionType) {
+        const left = this.selectionState.x;
+        const top = this.selectionState.y;
+        const width = this.selectionState.w;
+        const height = this.selectionState.h;
+        for (let i = 0; i < elements.length; i++) {
+            const rect = elements[i].getBoundingClientRect();
+            if (isOverlap(left, top, width, height, rect.left, rect.top, rect.width, rect.height)) {
+                this.state.env.nbus.trigger(this.env.channel + "/select" /* SelectionEventType.select */, {
+                    id: elements[i].id,
+                    type: selectionType
+                });
             }
             else {
-                this.lastPointerPos = {
-                    x: event.x,
-                    y: event.y
-                };
+                this.state.env.nbus.trigger(this.env.channel + "/unselect" /* SelectionEventType.unselect */, {
+                    id: elements[i].id,
+                    type: selectionType
+                });
+            }
+        }
+    }
+    onContextMenu(event) {
+        if (event.target.classList.contains("nuido-doc") ||
+            event.target.classList.contains("nuido-doc-container")) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
+    onMouseMove(event) {
+        if (event.buttons == 2) {
+            if (event.target.classList.contains("nuido-doc") ||
+                event.target.classList.contains("nuido-doc-container")) {
+                event.stopPropagation();
+                event.preventDefault();
+                if (this.lastPointerPos) {
+                    if (this.isMoving || Math.hypot(event.x - this.lastPointerPos.x, event.y - this.lastPointerPos.y) >= 20) {
+                        document.documentElement.style.cursor = "move";
+                        this.state.env.ui.translateX = this.state.env.ui.translateX + event.movementX;
+                        this.state.env.ui.translateY = this.state.env.ui.translateY + event.movementY;
+                        const doc = document.querySelector(".nuido-doc");
+                        doc.style.transform =
+                            "translate(" +
+                                this.state.env.ui.translateX +
+                                "px, " +
+                                this.state.env.ui.translateY +
+                                "px) scale(" +
+                                this.state.env.ui.zoom +
+                                ")";
+                        this.isMoving = true;
+                    }
+                }
+                else {
+                    this.lastPointerPos = {
+                        x: event.x,
+                        y: event.y
+                    };
+                }
             }
         }
         else if (event.shiftKey) {
@@ -183,42 +217,12 @@ export class NuidoUi extends Component {
                     h: Math.abs(event.y - this.startSelectionRect.y),
                 };
                 Object.assign(this.selectionState, eventRect);
-                const left = this.selectionState.x;
-                const top = this.selectionState.y;
-                const width = this.selectionState.w;
-                const height = this.selectionState.h;
                 const nodeEls = this.selectionState.nodeElements;
                 const pathEls = this.selectionState.pathElements;
-                for (let i = 0; i < nodeEls.length; i++) {
-                    const rect = nodeEls[i].getBoundingClientRect();
-                    if (isOverlap(left, top, width, height, rect.left, rect.top, rect.width, rect.height)) {
-                        this.state.env.nbus.trigger(this.env.channel + "/select" /* SelectionEventType.select */, {
-                            id: nodeEls[i].id,
-                            type: "node" /* SelectionType.node */
-                        });
-                    }
-                    else {
-                        this.state.env.nbus.trigger(this.env.channel + "/unselect" /* SelectionEventType.unselect */, {
-                            id: nodeEls[i].id,
-                            type: "node" /* SelectionType.node */
-                        });
-                    }
-                }
-                for (let i = 0; i < pathEls.length; i++) {
-                    const rect = pathEls[i].getBoundingClientRect();
-                    if (isOverlap(left, top, width, height, rect.left, rect.top, rect.width, rect.height)) {
-                        this.state.env.nbus.trigger(this.env.channel + "/select" /* SelectionEventType.select */, {
-                            id: pathEls[i].id,
-                            type: "edge" /* SelectionType.edge */
-                        });
-                    }
-                    else {
-                        this.state.env.nbus.trigger(this.env.channel + "/unselect" /* SelectionEventType.unselect */, {
-                            id: pathEls[i].id,
-                            type: "edge" /* SelectionType.edge */
-                        });
-                    }
-                }
+                const jointEls = this.selectionState.jointElements;
+                this._toggleSelections(nodeEls, "node" /* SelectionType.node */);
+                this._toggleSelections(pathEls, "edge" /* SelectionType.edge */);
+                this._toggleSelections(jointEls, "joint" /* SelectionType.joint */);
             }
         }
     }
@@ -245,14 +249,49 @@ export class NuidoUi extends Component {
         }
     }
     onWheel(event) {
-        if (event.ctrlKey) {
-            if (event.deltaY > 0) {
-                this.zoom_out();
+        if (event.target.classList.contains("nuido-doc") ||
+            event.target.classList.contains("nuido-doc-container")) {
+            event.stopPropagation();
+            event.preventDefault();
+            if (event.ctrlKey) {
+                if (event.deltaY > 0) {
+                    this.zoom_out();
+                }
+                else {
+                    this.zoom_in();
+                }
+            }
+            else if (event.shiftKey) {
+                this.scroll_horizontal(-event.deltaY);
             }
             else {
-                this.zoom_in();
+                this.scroll_vertical(-event.deltaY);
             }
         }
+    }
+    scroll_horizontal(delta) {
+        this.state.env.ui.translateX = this.state.env.ui.translateX + delta;
+        const doc = document.querySelector(".nuido-doc");
+        doc.style.transform =
+            "translate(" +
+                this.state.env.ui.translateX +
+                "px, " +
+                this.state.env.ui.translateY +
+                "px) scale(" +
+                this.state.env.ui.zoom +
+                ")";
+    }
+    scroll_vertical(delta) {
+        this.state.env.ui.translateY = this.state.env.ui.translateY + delta;
+        const doc = document.querySelector(".nuido-doc");
+        doc.style.transform =
+            "translate(" +
+                this.state.env.ui.translateX +
+                "px, " +
+                this.state.env.ui.translateY +
+                "px) scale(" +
+                this.state.env.ui.zoom +
+                ")";
     }
     change_translation() {
         this.state.env.ui.translateX = (this.state.env.ui.translateX / this.state.env.ui.last_zoom)

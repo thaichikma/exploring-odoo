@@ -10,9 +10,6 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-from datetime import datetime as dt, timedelta
-from odoo.tools import date_utils as dtu
-
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 # Adapted from base_automation module

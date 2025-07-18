@@ -17,9 +17,9 @@ DO NOT USE IT IN PRODUCTION.
                 </button>
             </div>
             <ul id="sidebar-nav" class="nav nav-pills m-3 overflow-y-auto overflow-x-hidden">
-                <div class="nav-item nav-category">
+                <div class="nav-item nav-category" t-on-click="() => toggleCategory('sidebar-cat--1')">
                     <h5 class="mb-0">
-                        <a class="d-none d-md-inline my-1" type="button" t-on-click="() => toggleCategory('sidebar-cat--1')">
+                        <a class="d-none d-md-inline my-1" type="button">
                             Document Info
                         </a>
                     </h5>
@@ -44,9 +44,9 @@ DO NOT USE IT IN PRODUCTION.
     </t>
 
     <t t-name="nuido_base.sidebar-menu-items">
-        <div class="nav-item nav-category">
+        <div class="nav-item nav-category" t-on-click="() => toggleCategory('sidebar-cat-' + category_title)">
             <h5 class="mb-0">
-                <a class="d-none d-md-inline my-1" type="button" t-on-click="() => toggleCategory('sidebar-cat-' + category_title)">
+                <a class="d-none d-md-inline my-1" type="button">
                     <t t-out="category_title"/>
                 </a>
                 <hr class="d-block d-md-none my-1" />

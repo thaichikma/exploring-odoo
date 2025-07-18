@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { Component } from "@odoo/owl";
@@ -25,7 +25,7 @@ export class ModelFieldTags extends Component {
                     if (!path.isInvalid) {
                         this.props.onAddField({
                             label: path.displayNames.join("."),
-                            technical: this.fieldPath
+                            value: this.fieldPath
                         });
                     }
                 }
@@ -44,7 +44,7 @@ export class ModelFieldTags extends Component {
                 showSearchInput: true,
                 followRelations: false,
                 filter: (value) => value.searchable && value.type != "json"
-                    && (this.props.fields.findIndex(o => o.technical === value.name) < 0),
+                    && (this.props.fields.findIndex(o => o.value === value.name) < 0),
             });
         }
     }
@@ -58,10 +58,10 @@ export class ModelFieldTags extends Component {
         this.props.onDeleteField(fieldName);
     }
     get tags() {
-        return this.props.fields.map(({ label, technical }) => ({
-            id: technical,
+        return this.props.fields.map(({ label, value }) => ({
+            id: value,
             text: label,
-            onDelete: () => this.onFieldDeleted(technical)
+            onDelete: () => this.onFieldDeleted(value)
         }));
     }
 }

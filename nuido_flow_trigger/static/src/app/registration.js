@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { registry } from "@web/core/registry";
@@ -19,33 +19,37 @@ import { OnScheduleTriggerNodeModel } from "@nuido_flow_trigger/models/triggers/
 import { OnWebhookTriggerNode } from "@nuido_flow_trigger/components/triggers/on_webhook_trigger_node";
 import { OnWebhookTriggerNodeModel } from "@nuido_flow_trigger/models/triggers/on_webhook_trigger_node";
 // Odoo Trigger Nodes
-registry.category(NuidoNodeRegistryName).add(OnCreateTriggerNode.name, {
+const nuidoNodeRegistry = registry.category(NuidoNodeRegistryName);
+nuidoNodeRegistry.add(OnCreateTriggerNode.name, {
     component: OnCreateTriggerNode,
     model: OnCreateTriggerNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(OnDeleteTriggerNode.name, {
+nuidoNodeRegistry.add(OnDeleteTriggerNode.name, {
     component: OnCreateTriggerNode,
     model: OnDeleteTriggerNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(OnEditTriggerNode.name, {
+nuidoNodeRegistry.add(OnEditTriggerNode.name, {
     component: OnEditTriggerNode,
     model: OnEditTriggerNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(OnScheduleTriggerNode.name, {
+nuidoNodeRegistry.add(OnScheduleTriggerNode.name, {
     component: OnScheduleTriggerNode,
     model: OnScheduleTriggerNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(OnWebhookTriggerNode.name, {
+nuidoNodeRegistry.add(OnWebhookTriggerNode.name, {
     component: OnWebhookTriggerNode,
     model: OnWebhookTriggerNodeModel
 });
 // Menu items
 // Odoo Triggers
-const odooTriggerNodeMenuItemsReg = registry.category(NuidoSidebarMenuItemRegistryName).add("Trigger", {
-    app: "nuidoflow",
-    category: "Trigger",
-    items: []
-});
+const odooTriggerNodeMenuItemsReg = registry.category(NuidoSidebarMenuItemRegistryName);
+if (!odooTriggerNodeMenuItemsReg.contains("Trigger")) {
+    odooTriggerNodeMenuItemsReg.add("Trigger", {
+        app: "nuidoflow",
+        category: "Trigger",
+        items: []
+    });
+}
 const odooTriggerNodeMenuItems = odooTriggerNodeMenuItemsReg.get("Trigger");
 odooTriggerNodeMenuItems.items.push({
     title: "On Create",

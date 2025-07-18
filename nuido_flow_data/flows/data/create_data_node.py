@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -15,7 +15,7 @@ from odoo.tools import safe_eval
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 from odoo.addons.nuido_flow.flows.tools.tools import get_default_context_for_eval, get_active_record_info
 
-from .lookup_tools import get_lookup_nodes
+from .tools import get_lookup_nodes
 
 class CreateDataNode(BaseNode):
     def process(self, params):
@@ -53,4 +53,6 @@ class CreateDataNode(BaseNode):
 
         records = self.env[model].create(values)
 
-        return records
+        return {
+            "result": records
+        }

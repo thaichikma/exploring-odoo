@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -14,11 +14,10 @@ from typing import Sequence
 
 from odoo.tools import safe_eval
 
-from odoo.addons.nuido_base.tools.function_tool import create_object
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 from odoo.addons.nuido_flow.flows.tools.tools import get_default_context_for_eval, get_active_record_info
 
-from .lookup_tools import get_lookup_nodes
+from .tools import get_lookup_nodes
 
 class UpdateDataNode(BaseNode):
     def process(self, params):
@@ -47,7 +46,8 @@ class UpdateDataNode(BaseNode):
             ids = [ids]
 
         model = self.definition["model"]
-        count = self.env[model].search_count([("id", "in", ids)])
+        res = self.env[model]
+        count = res.search_count([("id", "in", ids)])
         if count > 0:
             values = {}
             for field in self.definition["fields"]:
@@ -66,11 +66,13 @@ class UpdateDataNode(BaseNode):
                 else:
                     values.update({ field["name"]: value })
 
-            records = self.env[model].browse(ids)
-            if (len(records) > 0 and records[0].id > -1):
-                for rec in records:
+            res = self.env[model].browse(ids)
+            if (len(res) > 0 and res[0].id > -1):
+                for rec in res:
                     rec.write(values)
 
-                return records
+                return res
 
-        return self.env[model]
+        return {
+            "result": res
+        }

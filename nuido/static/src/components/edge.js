@@ -33,15 +33,15 @@ export class Edge extends Component {
                 const joint = edge.joints.find((o) => o.id == ctx.id);
                 ctx.startX = joint.vprops.cX;
                 ctx.startY = joint.vprops.cY;
-                ctx.startPointerX = x;
-                ctx.startPointerY = y;
+                ctx.lastX = x;
+                ctx.lastY = y;
             },
             onDrag: ({ element: ctx, x, y }) => {
-                const deltaX = (x - ctx.startPointerX) / this.env.ui.zoom;
-                const deltaY = (y - ctx.startPointerY) / this.env.ui.zoom;
-                const wpX = (ctx.startX + deltaX);
-                const wpY = (ctx.startY + deltaY);
-                this.onMoveJoint(ctx.id, wpX, wpY);
+                const deltaX = (x - ctx.lastX) / this.env.ui.zoom;
+                const deltaY = (y - ctx.lastY) / this.env.ui.zoom;
+                ctx.lastX = x;
+                ctx.lastY = y;
+                this.onMoveJoint(ctx.id, deltaX, deltaY);
             },
         });
         useBus(this.env.nbus, this.env.channel + DebugEventType, this.onDebug.bind(this));

@@ -1,15 +1,16 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
-import { SpecAwareNodeModel } from "@nuido_flow/models/core/spec_aware_node";
+import { ModelNodeModel } from "@nuido_flow_data/models/data/model_node";
 import { Default } from "@nuido/utils/registry";
 import { LookupPort } from "@nuido_flow_data/components/ports/lookup_port";
-export class UpdateDataNodeModel extends SpecAwareNodeModel {
+export class UpdateDataNodeModel extends ModelNodeModel {
     setup() {
+        super.setup();
         const inId = "in-" + this.id + "-1";
         this.addInPort(inId, Default, 1);
         const outId = "out-" + this.id + "-1";
@@ -19,8 +20,6 @@ export class UpdateDataNodeModel extends SpecAwareNodeModel {
             role: "lookup"
         });
         this.ids = "";
-        this.model = "";
-        this.model_description = "";
         this.fields = [];
     }
     addOrUpdateField(name, value) {
@@ -35,7 +34,7 @@ export class UpdateDataNodeModel extends SpecAwareNodeModel {
             });
         }
     }
-    removeRecordMap(name) {
+    removeField(name) {
         const field_idx = this.fields.findIndex(o => o.name === name);
         if (field_idx > -1) {
             this.fields.splice(field_idx, 1);

@@ -115,6 +115,13 @@
     width: 240px;
 }
 
+.sidebar-menu-root>.nav>.nav-category,
+.sidebar-menu-root>.nav>.collapse>.nav-category {
+    background: $gray-200;
+    border-radius: 4px;
+    padding-left: 1em;
+    cursor: pointer;
+}
 
 .toolbar {
     top: 10px;
@@ -139,6 +146,14 @@
 
         .dragged-placeholder {
             height: 36px;
+        }
+    }
+}
+
+@-moz-document url-prefix(){
+    .sidebar-menu-root {
+        &>.nav {
+            height: 100%;
         }
     }
 }

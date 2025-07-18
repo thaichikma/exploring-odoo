@@ -73,7 +73,7 @@ DO NOT USE IT IN PRODUCTION.
             <field name="view_id" ref="nuido_flow.nuido_flow_node_definition_list"/>
         </record>
 
-        <menuitem name="Nuido Flow" id="nuido_flow.app_menu" />
+        <menuitem name="Nuido Flow" id="nuido_flow.app_menu" web_icon="nuido_flow,static/description/icon.png"/>
 
         <menuitem name="Node Definition" id="nuido_flow.menu_doc_ref_links" parent="nuido_flow.app_menu" sequence="1"
             action="nuido_flow.action_nuido_flow_node_definition" />

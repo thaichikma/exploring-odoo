@@ -1,14 +1,15 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { Default } from "@nuido/utils/registry";
-import { SpecAwareNodeModel } from "@nuido_flow/models/core/spec_aware_node";
-export class BrowseDataNodeModel extends SpecAwareNodeModel {
+import { ModelNodeModel } from "@nuido_flow_data/models/data/model_node";
+export class BrowseDataNodeModel extends ModelNodeModel {
     setup() {
+        super.setup();
         const inId = "in-" + this.id + "-1";
         this.addInPort(inId, Default, 1);
         const outId = "out-" + this.id + "-1";
@@ -21,8 +22,6 @@ export class BrowseDataNodeModel extends SpecAwareNodeModel {
         this.addAuxOutPort(auxOutId, Default, 1, {
             role: "data"
         });
-        this.model = "";
-        this.model_description = "";
         this.reference_values = "";
         this.reference_field = "";
     }

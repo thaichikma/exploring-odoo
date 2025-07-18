@@ -54,13 +54,16 @@ export class Port extends Component {
             const elRect = event.target.getBoundingClientRect();
             const x = ((elRect.left - docRect.left) + elRect.width / 2) / this.env.ui.zoom;
             const y = ((elRect.top - docRect.top) + elRect.height / 2) / this.env.ui.zoom;
-            this.env.nbus.trigger(this.env.channel + "/edge-complete" /* NewEdgeEventType.complete */, {
+            this.env.nbus.trigger(this.env.channel + "/edge-end" /* NewEdgeEventType.end */, {
                 id: this.props.port.id,
+                direction: this.props.port.direction,
                 nodeId: this.props.port.nodeId,
                 x: x,
                 y: y
             });
         }
+    }
+    onContextMenu(event) {
     }
     onRecalculateEdgeEndpoints(event) {
         if (event.detail) {

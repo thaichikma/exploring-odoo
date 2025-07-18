@@ -96,19 +96,22 @@ class NuidoFlowStudio extends NuidoStudio {
             });
             return;
         }
-        const hasTriggerNode = this.currentDoc.nodes.findIndex(o => o.nodeType.endsWith("TriggerNode")) > -1;
+        const isProcessed = this.currentDoc.isProcessed;
         confirmed = false;
-        if (hasTriggerNode) {
+        if (!isProcessed) {
             confirmed = await new Promise((resolve) => {
                 this.dialog.add(ConfirmationDialog, {
                     title: 'Confirmation',
-                    body: "Running the flow will register trigger nodes into Odoo system. Proceed?",
+                    body: "Running the flow will process it first. Proceed?",
                     confirm: () => resolve(true),
                     cancel: () => resolve(false),
                 });
             });
         }
-        if (confirmed || !hasTriggerNode) {
+        else {
+            confirmed = true;
+        }
+        if (confirmed) {
             this.clearCaches();
             const res = await rpc("/nuidoflow/run", {
                 "def_id": this.props.action.context.active_id,

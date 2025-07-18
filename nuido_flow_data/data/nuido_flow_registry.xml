@@ -37,11 +37,6 @@ DO NOT USE IT IN PRODUCTION.
             <field name="key">RecordMapNode</field>
             <field name="value">nuido_flow_data.flows.node_info,build_record_map_node</field>
         </record>
-        <record id="build_function_send_data_node" model="nuido_base.registry">
-            <field name="category">Build Function</field>
-            <field name="key">SendDataNode</field>
-            <field name="value">nuido_flow_data.flows.node_info,build_send_data_node</field>
-        </record>
         <record id="build_function_browse_data_node" model="nuido_base.registry">
             <field name="category">Build Function</field>
             <field name="key">BrowseDataNode</field>
@@ -71,6 +66,16 @@ DO NOT USE IT IN PRODUCTION.
             <field name="category">Build Function</field>
             <field name="key">ArchiveDataNode</field>
             <field name="value">nuido_flow_data.flows.node_info,build_archive_data_node</field>
+        </record>
+        <record id="build_function_dynamic_date_filter_node" model="nuido_base.registry">
+            <field name="category">Build Function</field>
+            <field name="key">DynamicDateFilterNode</field>
+            <field name="value">nuido_flow_data.flows.node_info,build_dynamic_date_filter_node</field>
+        </record>
+        <record id="build_function_action_node" model="nuido_base.registry">
+            <field name="category">Build Function</field>
+            <field name="key">ActionNode</field>
+            <field name="value">nuido_flow_data.flows.node_info,build_action_node</field>
         </record>
         <!-- STARTER NODES -->
         <record id="build_function_custom_field_starter_node" model="nuido_base.registry">
@@ -106,11 +111,6 @@ DO NOT USE IT IN PRODUCTION.
             <field name="key">RecordMapNode</field>
             <field name="value">nuido_flow_data.flows.node_info,create_record_map_node</field>
         </record>
-        <record id="create_function_send_data_node" model="nuido_base.registry">
-            <field name="category">Create Function</field>
-            <field name="key">SendDataNode</field>
-            <field name="value">nuido_flow_data.flows.node_info,create_send_data_node</field>
-        </record>
         <record id="create_function_browse_data_node" model="nuido_base.registry">
             <field name="category">Create Function</field>
             <field name="key">BrowseDataNode</field>
@@ -140,6 +140,16 @@ DO NOT USE IT IN PRODUCTION.
             <field name="category">Create Function</field>
             <field name="key">ArchiveDataNode</field>
             <field name="value">nuido_flow_data.flows.node_info,create_archive_data_node</field>
+        </record>
+        <record id="create_function_dynamic_date_filter_node" model="nuido_base.registry">
+            <field name="category">Create Function</field>
+            <field name="key">DynamicDateFilterNode</field>
+            <field name="value">nuido_flow_data.flows.node_info,create_dynamic_date_filter_node</field>
+        </record>
+        <record id="create_function_action_node" model="nuido_base.registry">
+            <field name="category">Create Function</field>
+            <field name="key">ActionNode</field>
+            <field name="value">nuido_flow_data.flows.node_info,create_action_node</field>
         </record>
         <!-- STARTER NODES -->
         <record id="create_function_custom_field_starter_node" model="nuido_base.registry">

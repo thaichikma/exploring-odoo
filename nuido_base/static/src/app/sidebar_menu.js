@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { registry } from "@web/core/registry";
@@ -19,6 +19,9 @@ export class SidebarMenu extends Component {
         const sidebarItemRegistry = registry.category(NuidoSidebarMenuItemRegistryName).getAll();
         const res = sidebarItemRegistry.filter((o) => o.app == this.props.app)
             .sort((a, b) => a.category > b.category ? 1 : a.category < b.category ? -1 : 0);
+        res.forEach((o) => {
+            o.items.sort((a, b) => a.title > b.title ? 1 : a.title < b.title ? -1 : 0);
+        });
         return res;
     }
     toggleCategory(id) {

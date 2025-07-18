@@ -6,7 +6,7 @@
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { Default } from "@nuido/utils/registry";
-import { SpecAwareNodeModel } from "@nuido_flow/models/core/spec_aware_node";
+import { SpecAwareNodeModel } from "@nuido/models/spec_aware_node";
 export class MergeNodeModel extends SpecAwareNodeModel {
     setup() {
         const inId = "in-" + this.id + "-1";

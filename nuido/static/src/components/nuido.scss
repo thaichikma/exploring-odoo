@@ -59,6 +59,7 @@
                         margin-right: -12px;
 
                         .node-title {
+                            display: flex;
                             padding-top: 5px;
                             padding-bottom: 3px;
                             border-bottom: $nuido-node-title-bottom-color solid 1px;
@@ -68,6 +69,11 @@
                                 max-width: 100%;
                                 width: auto;
                                 filter: invert(0.80);
+                            }
+
+                            .node-title-text {
+                                text-wrap: nowrap;
+                                margin-right: 5em;
                             }
                         }
 
@@ -92,6 +98,9 @@
                                 }
                             }
 
+                            table {
+                                user-select: text;
+                            }
                         }
                     }
 
@@ -189,6 +198,10 @@
                     stroke-width: $nuido-path-width;
                     stroke: $nuido-path-color;
                     pointer-events: all;
+
+                    &.selected {
+                        stroke: $nuido-path-selected-color;
+                    }
                 }
 
                 .path:hover {
@@ -196,21 +209,25 @@
                     cursor: pointer;
                 }
 
-                .path.selected {
-                    stroke: $nuido-path-selected-color;
-                }
-
                 .joint {
                     cursor: move;
                     stroke: $nuido-joint-border-color;
-                    stroke-width: 1;
+                    stroke-width: 2;
                     fill: $nuido-joint-background-color;
                     pointer-events: all;
+
+                    &.selected {
+                        stroke: $nuido-joint-border-selected-color;
+                    }
                 }
             }
 
             svg.edge.new-edge {
                 .path:hover {
+                    stroke: $nuido-path-color;
+                }
+
+                .path.selected {
                     stroke: $nuido-path-color;
                 }
             }

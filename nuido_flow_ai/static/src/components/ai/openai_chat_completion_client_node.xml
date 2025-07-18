@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
+
+This software is released under the MIT License.
+https://opensource.org/licenses/MIT
+
+THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
+DO NOT USE IT IN PRODUCTION.
+-->
+<templates xml:space="preserve">
+    <t t-name="nuido_flow_ai.openai-chat-completion-client-node" t-inherit="nuido.node" t-inherit-mode="primary">
+        <xpath expr="//div[hasclass('node-content')]" position="inside">
+            <div class="mb-2">
+                <label t-attf-id="label-{{props.node.id}}-ai-model" t-att-for="aiModelInputId">Type</label>
+                <select t-att-id="aiModelInputId" t-on-change.stop.prevent="onAiModelChanged" class="form-control">
+                    <option value="qwen2.5-7b-instruct" t-att-selected="props.node.dynamic_date_interval === 'qwen2.5-7b-instruct'">qwen2.5-7b-instruct</option>
+                    <option value="gemma-3-4b-it" t-att-selected="props.node.dynamic_date_interval === 'gemma-3-4b-it'">gemma-3-4b-it</option>
+                    <option value="hermes-3-llama-3.1-8b" t-att-selected="props.node.dynamic_date_interval === 'hermes-3-llama-3.1-8b'">hermes-3-llama-3.1-8b</option>
+                </select>
+            </div>
+            <div class="mb-2">
+                <TextInputDialogInput id="props.node.id + '-api-key'" label="'API Key'" value="props.node.api_key"
+                    onChanged.bind="onApiKeyChanged"
+                    hideValue="true"/>
+            </div>
+            <div class="mb-2">
+                <TextInputDialogInput id="props.node.id + '-base-url'" label="'Base URL'" value="props.node.base_url"
+                    onChanged.bind="onBaseUrlChanged"/>
+            </div>
+        </xpath>
+    </t>
+</templates>

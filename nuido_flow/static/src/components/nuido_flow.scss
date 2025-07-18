@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 
@@ -10,6 +10,11 @@
     .nuido-doc-container {
         .nuido-doc {
             .node-container {
+                &>.o_input {
+                    border: 0 0 0 0;
+                    width: 100%;
+                }
+
 
                 .node:not(.node.sectioned) {
                     label {
@@ -87,11 +92,6 @@
         max-height: 300px;
         overflow-y: auto;
     }
-}
-
-.o_input {
-    border: 0 0 0 0;
-    width: 100%;
 }
 
 .text-divider {

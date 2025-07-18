@@ -30,8 +30,8 @@ DO NOT USE IT IN PRODUCTION.
                 <label t-attf-id="label-{{props.node.id}}-field-description" t-attf-for="text-{{props.node.id}}-field-description">Description</label>
                 <input t-attf-id="text-{{props.node.id}}-field-description" type="text" t-model="props.node.field_description"></input>
             </div>
+            <div class="text-danger">WARNING: Removing field means removing the data contained in the field too.</div>
             <div class="mb-2 form-check form-switch">
-                <div class="text-danger">WARNING: Removing field means removing the data contained in the field too.</div>
                 <input t-att-id="removeFieldInputId" type="checkbox" t-att-checked="props.node.remove_field" t-att-value="props.node.remove_field"
                     t-on-click="onRemoveFieldChanged"
                     class="form-check-input"/>

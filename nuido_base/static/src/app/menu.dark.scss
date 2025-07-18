@@ -43,5 +43,9 @@
         background: transparent !important;
         border-color: transparent !important;
     }
+}
 
+.sidebar-menu-root>.nav>.nav-category,
+.sidebar-menu-root>.nav>.collapse>.nav-category {
+    background: $gray-800;
 }

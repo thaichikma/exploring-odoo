@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -25,25 +25,26 @@ class OnEditTriggerNode(RecordTriggerNode):
 
                 records = self.with_env(self.env).filtered('id')
                 old_values = {
-                    record.id: {field_name: record[field_name] for field_name in vals if field_name in record._fields and
-                                record._fields[field_name].store}
-                    for record in records
+                    record.id: {field_name: record[field_name] for field_name in vals if field_name in record._fields} for record in records
                 }
                 write.origin(self.with_env(node_definitions.env), vals, **kw)
 
-                context = {
-                    'active_model': records._name,
-                    'active_ids': records.ids,
-                    'active_id': records.id,
-                    'old_values': old_values,
-                    'is_debug': self.env.user.has_group('base.group_no_one')
-                }
                 for node_def in node_definitions:
-                    if not node_def["trigger_field_name"] or node_def["trigger_field_name"] in vals:
-                        context.update({
+                    trigger_field_names = []
+                    if node_def["trigger_field_ids"]:
+                        trigger_field_names = [o["name"] for o in node_def["trigger_field_ids"]]
+                    if "trigger_field_names" not in node_def or any(e for e in trigger_field_names if e in vals.keys()):
+                        for record in records:
+                            context = {
+                                'active_model': record._name,
+                                'active_record': record,
+                                'active_ids': record.ids,
+                                'active_id': record.id,
+                                'old_values': old_values[record.id],
+                                'is_debug': self.env.user.has_group('base.group_no_one'),
                                 "active_node_definition_id": node_def.id,
-                            })
-                        node_def.with_context(**context).run({})
+                            }
+                            node_def.with_context(**context).run({})
                 return True
 
             return write

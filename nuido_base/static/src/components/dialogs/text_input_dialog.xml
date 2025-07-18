@@ -14,10 +14,20 @@ DO NOT USE IT IN PRODUCTION.
     <Dialog title="props.title">
         <div class="mb-3 row">
             <t t-if="props.label">
-                <label for="document-name" class="col-sm-2 col-form-label"><t t-out="props.label"/></label>
+                <label for="dialog-input" class="col-sm-2 col-form-label"><t t-out="props.label"/></label>
             </t>
             <div class="col-sm-10 flex-fill">
-                <input type="text" class="form-control text-primary border-primary" id="document-name" t-model="state.text" />
+                <t t-if="props.hidable" >
+                    <div class="input-group">
+                        <input t-att-type="state.type" class="form-control text-primary border-primary"
+                            id="dialog-input" t-model="state.text" />
+                        <button class="btn btn-outline-secondary" t-on-click="onTogglePasswordClick"><i class="fa fa-eye"></i></button>
+                    </div>
+                </t>
+                <t t-else="">
+                    <input type="text" class="form-control text-primary border-primary"
+                        id="dialog-input" t-model="state.text" />
+                </t>
             </div>
         </div>
 

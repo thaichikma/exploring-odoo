@@ -7,7 +7,7 @@
 // DO NOT USE IT IN PRODUCTION.
 
 /** @odoo-module **/
-import { Component, useRef, useSubEnv, onWillUpdateProps } from "@odoo/owl";
+import { Component, useRef, useSubEnv, onWillUpdateProps, onWillUnmount, onMounted } from "@odoo/owl";
 import { useBus } from "@web/core/utils/hooks";
 
 import { AiMessage } from "./ai_message";

@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { Component, useState } from "@odoo/owl";
@@ -32,7 +32,8 @@ export class TextInputDialogInput extends Component {
         this.dialog.add(TextInputDialog, {
             title: this.props.label,
             initialValue: this.props.value,
-            apply: this.updateText.bind(this)
+            apply: this.updateText.bind(this),
+            hidable: this.props.hidable
         });
     }
 }
@@ -43,9 +44,11 @@ TextInputDialogInput.props = {
     label: String,
     onChanged: Function,
     value: { type: String, optional: true },
-    hideValue: { type: Boolean, optional: true }
+    hideValue: { type: Boolean, optional: true },
+    hidable: { type: Boolean, optional: true },
 };
 TextInputDialogInput.defaultProps = {
     value: "",
-    hideValue: false
+    hideValue: false,
+    hidable: false
 };

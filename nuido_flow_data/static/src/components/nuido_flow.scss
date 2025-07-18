@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 
@@ -36,15 +36,14 @@
                             mask: calc(50% + var(--s)*0.369) calc(50% + var(--s)*0) var(--g),calc(50% + var(--s)*0.261) calc(50% + var(--s)*0.261) var(--g),calc(50% + var(--s)*0) calc(50% + var(--s)*0.369) var(--g),calc(50% + var(--s)*-0.261) calc(50% + var(--s)*0.261) var(--g),calc(50% + var(--s)*-0.369) calc(50% + var(--s)*0) var(--g),calc(50% + var(--s)*-0.261) calc(50% + var(--s)*-0.261) var(--g),calc(50% + var(--s)*0) calc(50% + var(--s)*-0.369) var(--g),calc(50% + var(--s)*0.261) calc(50% + var(--s)*-0.261) var(--g),radial-gradient(calc(var(--s)*0.418),#000 99%,#0000 101%) subtract,calc(50% + var(--s)*0.447) calc(50% + var(--s)*0.185) var(--g),calc(50% + var(--s)*0.185) calc(50% + var(--s)*0.447) var(--g),calc(50% + var(--s)*-0.185) calc(50% + var(--s)*0.447) var(--g),calc(50% + var(--s)*-0.447) calc(50% + var(--s)*0.185) var(--g),calc(50% + var(--s)*-0.447) calc(50% + var(--s)*-0.185) var(--g),calc(50% + var(--s)*-0.185) calc(50% + var(--s)*-0.447) var(--g),calc(50% + var(--s)*0.185) calc(50% + var(--s)*-0.447) var(--g),calc(50% + var(--s)*0.447) calc(50% + var(--s)*-0.185) var(--g);
                         }
                     }
-
-                    .http-header-port {
+                    .data-filter-port {
                         background-color: $nuido-port-border-color;
                         transform: none;
                         height: 15px;
                         width: 15px;
-                        clip-path: polygon(50% -50%,100% 50%,50% 150%,0 50%);
 
                         &::after {
+                            --r: 3px;
                             transform: none;
                             content: "";
                             width: 11px;
@@ -52,8 +51,10 @@
                             position: absolute;
                             left: 10px;
                             top: 10px;
-                            background: $teal-600;
-                            clip-path: polygon(50% -50%,100% 50%,50% 150%,0 50%);
+                            background: $teal-500;
+
+                            border-radius: 2px;
+                            mask: radial-gradient(var(--r) at var(--r),#0000 calc(100% - 1px),#000) calc(-1*var(--r));
                         }
                     }
                 }

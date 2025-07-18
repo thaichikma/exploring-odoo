@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { registry } from "@web/core/registry";
@@ -13,11 +13,12 @@ import { SalesSummaryOdooNodeModel } from "@nuido_flow_sales/models/sales/sales_
 import { FixedRangeSalesSummaryOdooNode } from "@nuido_flow_sales/components/sales/fixed_range_sales_summary";
 import { FixedRangeSalesSummaryOdooNodeModel } from "@nuido_flow_sales/models/sales/fixed_range_sales_summary";
 // Odoo Nodes
-registry.category(NuidoNodeRegistryName).add(SalesSummaryOdooNode.name, {
+const nuidoNodeRegistry = registry.category(NuidoNodeRegistryName);
+nuidoNodeRegistry.add(SalesSummaryOdooNode.name, {
     component: SalesSummaryOdooNode,
     model: SalesSummaryOdooNodeModel
 });
-registry.category(NuidoNodeRegistryName).add(FixedRangeSalesSummaryOdooNode.name, {
+nuidoNodeRegistry.add(FixedRangeSalesSummaryOdooNode.name, {
     component: FixedRangeSalesSummaryOdooNode,
     model: FixedRangeSalesSummaryOdooNodeModel
 });

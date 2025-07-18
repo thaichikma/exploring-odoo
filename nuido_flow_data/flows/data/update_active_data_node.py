@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -19,36 +19,34 @@ class UpdateActiveDataNode(BaseNode):
     def process(self, params):
         super().process(params)
 
-        model = self.definition["model"]
-        if len(self.env.context["active_ids"]) > 0:
-            context = get_default_context_for_eval(self.env)
-            if params is not None:
-                context['params'] = params
+        context = get_default_context_for_eval(self.env)
+        if params is not None:
+            context['params'] = params
 
-            info = get_active_record_info(self.env)
-            context = {**context, **info}
+        info = get_active_record_info(self.env)
+        context = {**context, **info}
 
-            values = {}
-            for field in self.definition["fields"]:
-                try:
-                    value = safe_eval.safe_eval(field["value"], context)
-                except:
-                    _logger.warning("Exception on evaluation: %s", field["value"], exc_info=True)
-                    value = None
+        values = {}
+        for field in self.definition["fields"]:
+            try:
+                value = safe_eval.safe_eval(field["value"], context)
+            except:
+                _logger.warning("Exception on evaluation: %s", field["value"], exc_info=True)
+                value = None
 
-                field = self.env["ir.model.fields"]._get(model, field["name"])
-                if field.ttype in ('one2many', 'many2many'):
-                    if type(value) == list:
-                        values.update({ field["name"]: value })
-                    else:
-                        values.update({ field["name"]: [value] })
-                else:
+            field = self.env["ir.model.fields"]._get(context["active_model"], field["name"])
+            if field.ttype in ('one2many', 'many2many'):
+                if type(value) == list:
                     values.update({ field["name"]: value })
+                else:
+                    values.update({ field["name"]: [value] })
+            else:
+                values.update({ field["name"]: value })
 
-            records = self.env[model].browse(self.env.context["active_ids"])
-            for rec in records:
-                rec.write(values)
+        res = context["active_record"]
+        for rec in res:
+            rec.write(values)
 
-            return records
-
-        return self.env[model]
+        return {
+            "result": res
+        }

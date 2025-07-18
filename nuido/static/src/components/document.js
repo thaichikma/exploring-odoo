@@ -11,7 +11,7 @@ import { useDebounced, useThrottleForAnimation } from "@web/core/utils/timing";
 import { registry } from "@web/core/registry";
 import { uuidv4 } from "@nuido/utils/utils";
 import { Edge } from "@nuido/components/edge";
-import { DebugEventType, EdgeTypeEventType, AdjustEdgeEndpointEventType, NodeMovedEventType } from "@nuido/components/events";
+import { DebugEventType, EdgeTypeEventType, AdjustEdgeEndpointEventType, NodeMovedEventType, RemoveEdgeEventType, EdgeCompletedEventType } from "@nuido/components/events";
 import { DocumentModel } from "@nuido/models/document";
 import { NuidoNodeRegistryName } from "@nuido/utils/registry";
 export class Document extends Component {
@@ -20,7 +20,6 @@ export class Document extends Component {
         document: DocumentModel
     };
     rootRef;
-    selected;
     setup() {
         this.rootRef = useRef("root");
         useBus(this.env.nbus, this.env.channel + "/new" /* DocumentEventType.new */, this.onNewNode.bind(this));
@@ -33,7 +32,7 @@ export class Document extends Component {
         useBus(this.env.nbus, this.env.channel + "/unselect" /* SelectionEventType.unselect */, this.onUnselect.bind(this));
         useBus(this.env.nbus, this.env.channel + "/clear" /* SelectionEventType.clear */, this.onClearSelected.bind(this));
         useBus(this.env.nbus, this.env.channel + "/edge-start" /* NewEdgeEventType.start */, this.onStartConnect.bind(this));
-        useBus(this.env.nbus, this.env.channel + "/edge-complete" /* NewEdgeEventType.complete */, this.onCompleteConnect.bind(this));
+        useBus(this.env.nbus, this.env.channel + "/edge-end" /* NewEdgeEventType.end */, this.onEndConnect.bind(this));
         useBus(this.env.nbus, this.env.channel + AdjustEdgeEndpointEventType, this.onAdjustEdgeEndpoint.bind(this));
         useBus(this.env.nbus, this.env.channel + DebugEventType, this.onDebug.bind(this));
         this.onMouseUp = useDebounced(this.onMouseUp, "animationFrame");
@@ -72,10 +71,16 @@ export class Document extends Component {
     onNodeMoved(event) {
         const doc = this.props.document;
         if (doc.selected.findIndex(o => o.id === event.detail.id) > -1) {
-            const selected = doc.selected.filter(o => (o.id !== event.detail.id) && (o.type === "node" /* SelectionType.node */));
-            for (let i = 0; i < selected.length; i++) {
-                const node = doc.nodes.find(o => o.id === selected[i].id);
+            const selectedNodes = doc.selected.filter(o => (o.id !== event.detail.id) && (o.type === "node" /* SelectionType.node */));
+            for (let i = 0; i < selectedNodes.length; i++) {
+                const node = doc.nodes.find(o => o.id === selectedNodes[i].id);
                 node.move(event.detail.x, event.detail.y);
+            }
+            const selectedJoints = doc.selected.filter(o => (o.id !== event.detail.id) && (o.type === "joint" /* SelectionType.joint */));
+            for (let i = 0; i < selectedJoints.length; i++) {
+                for (let j = 0; j < doc.edges.length; j++) {
+                    doc.edges[j].moveJoint(selectedJoints[i].id, event.detail.x, event.detail.y);
+                }
             }
         }
     }
@@ -124,6 +129,19 @@ export class Document extends Component {
     }
     onDeleteSelected() {
         const doc = this.props.document;
+        for (let i = 0; i < doc.selected.length; i++) {
+            if (doc.selected[i]) {
+                if (doc.selected[i].type === "edge" /* SelectionType.edge */) {
+                    const edge = doc.edges.find(o => o.id === doc.selected[i].id);
+                    if (edge) {
+                        this.env.nbus.trigger(this.env.channel + RemoveEdgeEventType, {
+                            id: edge.id
+                        });
+                    }
+                }
+            }
+        }
+        ;
         doc.deleteSelected();
         this.clearSelected();
     }
@@ -144,13 +162,20 @@ export class Document extends Component {
         else {
             edgeType = doc.auxEdgeType;
         }
-        doc.prepareEdge(id, edgeType, portId, nodeId, event.detail.x, event.detail.y);
+        doc.startEdge(id, edgeType, portId, nodeId, event.detail.x, event.detail.y);
     }
-    onCompleteConnect(event) {
+    onEndConnect(event) {
         const portId = event.detail.id;
         const nodeId = event.detail.nodeId;
         const doc = this.props.document;
-        doc.completeEdge(portId, nodeId, event.detail.x, event.detail.y);
+        const edge = doc.endEdge(portId, nodeId, event.detail.x, event.detail.y);
+        if (edge) {
+            this.env.nbus.trigger(this.env.channel + EdgeCompletedEventType, {
+                id: edge.id,
+                inNodeId: edge.inNodeId,
+                outNodeId: edge.outNodeId,
+            });
+        }
     }
     onAdjustEdgeEndpoint(event) {
         const portId = event.detail.id;
@@ -172,7 +197,19 @@ export class Document extends Component {
     onMouseUp(event) {
         const doc = this.props.document;
         if (doc && doc.newEdge !== undefined) {
-            doc.clearNewEdge();
+            if (event.button == 0) {
+                const docElement = document.querySelector(".nuido-doc");
+                const docRect = docElement.getBoundingClientRect();
+                const evX = event.clientX;
+                const evY = event.clientY;
+                const x = (evX - docRect.left) / this.env.ui.zoom;
+                const y = (evY - docRect.top) / this.env.ui.zoom;
+                const path = doc.newEdge.paths[doc.newEdge.paths.length - 1];
+                doc.newEdge.createJoint(path, x, y, doc.newEdge.joints.length - 1);
+            }
+            else {
+                doc.clearNewEdge();
+            }
         }
     }
     onDebug(event) {

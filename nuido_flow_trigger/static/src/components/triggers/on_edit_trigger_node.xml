@@ -17,15 +17,15 @@ DO NOT USE IT IN PRODUCTION.
                 value="state.modelDescription"
                 onModelSelected.bind="onModelSelected"
             />
-            <label t-attf-id="label-{{props.node.id}}-field-selector">Field</label>
-            <ModelFieldSelectorEx
-                resModel="props.node.model"
-                path="props.node.field"
-                readonly="props.node.model===''"
-                followRelations="false"
-                update.bind="onModelFieldUpdate"
-                allowEmpty="true"
-            />
+            <div class="data-input d-flex flex-column mb-2">
+                <label t-attf-id="label-{{props.node.id}}-model-selector">Fields</label>
+                <ModelFieldTags
+                    model="props.node.model"
+                    fields="props.node.fields"
+                    onAddField.bind="onFieldAdded"
+                    onDeleteField.bind="onFieldDeleted"
+                />
+            </div>
         </xpath>
     </t>
 </templates>

@@ -5,20 +5,22 @@
 // 
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
-import { NodeModel } from "@nuido/models/node";
 import { Default } from "@nuido/utils/registry";
-export class DataNodeModel extends NodeModel {
+import { DataFilterPort } from "@nuido_flow_data/components/ports/data_filter_port";
+import { ModelNodeModel } from "@nuido_flow_data/models/data/model_node";
+export class DataNodeModel extends ModelNodeModel {
     setup() {
+        super.setup();
+        const auxInId = "aux-in-" + this.id + "-1";
+        this.addAuxInPort(auxInId, DataFilterPort.name, Number.MAX_SAFE_INTEGER, {
+            role: "data-filter"
+        });
         const auxOutId = "aux-out-" + this.id + "-1";
         this.addAuxOutPort(auxOutId, Default, 1, {
             role: "data"
         });
         this.key = "my_data";
-        this.model = "";
-        this.model_description = "";
         this.fields = [];
         this.domain = "[]";
-        this.dynamic_date_field = "";
-        this.dynamic_date_interval = "" /* DateIntervalType.None */;
     }
 }

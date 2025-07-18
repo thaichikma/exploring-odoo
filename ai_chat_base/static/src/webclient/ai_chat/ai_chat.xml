@@ -21,6 +21,7 @@ DO NOT USE IT IN PRODUCTION.
                         isProcessing="message.isProcessing"
                     />
                 </t>
+                <div class="ai-chat-messages-anchor"></div>
             </div>
             <div class="d-flex">
                 <input

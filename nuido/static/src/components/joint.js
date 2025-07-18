@@ -12,4 +12,14 @@ export class Joint extends Component {
     static props = {
         joint: JointModel,
     };
+    onClick(event) {
+        if (!event.ctrlKey) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.env.nbus.trigger(this.env.channel + "/toggle" /* SelectionEventType.toggle */, {
+                id: this.props.joint.id,
+                type: "joint" /* SelectionType.joint */
+            });
+        }
+    }
 }
