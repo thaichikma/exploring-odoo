@@ -5,11 +5,6 @@
 #
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
-
-import logging
-
-_logger = logging.getLogger(__name__)
-
 from .record_trigger_node import RecordTriggerNode
 
 # Adapted from base_automation module
@@ -43,6 +38,7 @@ class OnEditTriggerNode(RecordTriggerNode):
                                 'old_values': old_values[record.id],
                                 'is_debug': self.env.user.has_group('base.group_no_one'),
                                 "active_node_definition_id": node_def.id,
+                                "active_node_definition_uuid": node_def.uuid,
                             }
                             node_def.with_context(**context).run({})
                 return True
@@ -66,8 +62,8 @@ class OnEditTriggerNode(RecordTriggerNode):
             self._register_hook()
             self.env.registry.registry_invalidated = True
 
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         self.update_registry()
 

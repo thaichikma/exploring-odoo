@@ -31,11 +31,16 @@ class NuidoAiController(http.Controller):
             if not node_definition.is_processed:
                 node_definition._process_node_definitions()
 
+            monitor_process = env['ir.config_parameter'].get_param("nuido_flow.monitor_process", False) == "True"
+
             context = {
                 "uid": env.user.id,
                 "user": env.user,
                 "is_debug": env.user.has_group('base.group_no_one'),
                 "active_node_definition_id": def_id,
+                "active_node_definition_uuid": node_definition.uuid,
+                "monitor_process": monitor_process,
+                "skip_monitor": False
             }
 
             node_definition.with_context(**context).run({})
@@ -61,7 +66,7 @@ class NuidoAiController(http.Controller):
 
             node_definition = env["nuido_flow.node.definition"].browse(def_id)
             if not node_definition.is_processed:
-                node_definition._process_node_definitions()
+                node_definition.with_context(skip_monitor=True)._process_node_definitions()
         except Exception as ex:
             _logger.error("Error processing Nuido Flow definition", exc_info=True)
             return False

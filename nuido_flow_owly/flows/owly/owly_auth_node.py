@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 import hmac
@@ -14,8 +14,8 @@ from odoo.http import request
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 class OwlyAuthNode(BaseNode):
-    def process(self, params) -> any:
-        super().process(params)
+    def _process(self, params) -> any:
+        super()._process(params)
 
         secret = str(self.definition["secret"]).encode()
         data = request.httprequest.get_data(cache=False)

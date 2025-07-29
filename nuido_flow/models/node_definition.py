@@ -1,17 +1,18 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
-# -*- coding: utf-8 -*-
 import logging
 _logger = logging.getLogger(__name__)
 
 import json
-from odoo import models
+from odoo import models, fields, SUPERUSER_ID
+from odoo.api import Environment
+from odoo.modules.registry import Registry
 
 from odoo.tools.json import json_default
 from odoo.addons.nuido_base.tools.function_tool import get_function
@@ -22,11 +23,14 @@ from odoo.addons.nuido_flow.models import registry_category as rcat
 
 from . import registry_category as rcat
 from ..flows.tools.tools import run_nodes
+from ..flows.tools.tools import send_monitoring_notification
 
 class NodeDefinition(models.Model):
     _name = "nuido_flow.node.definition"
     _description = "Nuido Flow Node Definition"
     _inherit = "nuido_base.node.definition"
+
+    uuid = fields.Char("UUID")
 
     def write(self, vals):
         cleanup = False
@@ -87,7 +91,8 @@ class NodeDefinition(models.Model):
 
     def _process_node_definitions(self):
         self.ensure_one()
-        infos = self.process_node_definition(self.raw)
+        obj, infos = self.process_node_definition(self.raw)
+        self.uuid = obj["id"]
         self.definition = infos
         self.is_processed = True
         self._process_record(self)
@@ -145,7 +150,14 @@ class NodeDefinition(models.Model):
 
         infos = json.dumps(node_infos, indent=4);
 
-        return infos;
+        return obj, infos;
+
+    def _send_monitoring_notification(self, type):
+        monitor_context = {
+            'flow_id': self.uuid
+        }
+        send_monitoring_notification(self.env, type, monitor_context)
+
 
     def _run(self, definitions, node_def, params):
         create_function_registry = self.env["nuido_base.registry"].search_read([("category", "=", rcat.CREATE_FUNCTION)])
@@ -160,8 +172,16 @@ class NodeDefinition(models.Model):
 
         node_def = next((o for o in definitions if o["type"] == "StartNode"), None)
         if node_def is not None:
+            monitor_process = self.env['ir.config_parameter'].get_param("nuido_flow.monitor_process", False)
+
+            if monitor_process:
+                self._send_monitoring_notification('start_flow')
+
             parametersJson = {}
             if len(node_def["parameters"].strip()) > 0:
                 parameters = node_def["parameters"]
                 parametersJson = json.loads(parameters)
             self.with_context(run_params=params, start_params=parametersJson)._run(definitions, node_def, params)
+
+            if monitor_process:
+                self._send_monitoring_notification('end_flow')

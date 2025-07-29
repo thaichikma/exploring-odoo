@@ -6,9 +6,6 @@
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
-import logging
-
-_logger = logging.getLogger(__name__)
 import ast
 import pandas as pd
 
@@ -19,8 +16,8 @@ from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 from .tools import get_data_filter_nodes
 
 class DataGroupNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         domain = []
         if ("domain" in params):

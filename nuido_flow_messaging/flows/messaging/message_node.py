@@ -1,14 +1,12 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
 import logging
-
-_logger = logging.getLogger(__name__)
 
 import markdown
 from markupsafe import Markup
@@ -20,9 +18,12 @@ from odoo.tools.rendering_tools import parse_inline_template, render_inline_temp
 
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
+from odoo.addons.nuido_flow.flows.tools.log_const import LOGGER_NAME
+_logger = logging.getLogger(LOGGER_NAME)
+
 class MessageNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         if "uid" in self.env.context and self.env.context["uid"]:
             if "message" in params:

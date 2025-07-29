@@ -21,8 +21,8 @@ class ShopifyAuthNode(BaseNode):
 
         return shopify_secret
 
-    def process(self, params):
-        super().process(params)
+    def _process(self, params) -> any:
+        super()._process(params)
 
         secret = str(self.definition["secret"]).encode()
         shopify_secret = self._calc_shopify_secret(secret)

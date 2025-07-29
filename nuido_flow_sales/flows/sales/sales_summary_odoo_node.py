@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -13,8 +13,8 @@ from odoo.tools.misc import format_date as odoo_format_date
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 class SalesSummaryOdooNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         summary_type = self.definition["summary_type"]
         date_start = dtu.start_of(fields.Datetime.now(), granularity=summary_type)

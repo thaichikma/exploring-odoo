@@ -15,7 +15,7 @@
     "author": "Yoni Tjio",
     "category": "Productivity",
     "version": "18.0.1.0.0",
-    "depends": ["stock", "nuido_flow", "nuido_flow_data", "nuido_flow_network"],
+    "depends": ["stock", "contacts", "nuido_flow", "nuido_flow_data", "nuido_flow_network"],
     "data": [
             "data/nuido_flow_registry.xml",
             "views/product_template_views.xml"

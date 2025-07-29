@@ -38,6 +38,7 @@ class NuidoWebhookController(Controller):
                 "user": node_definition.create_uid,
                 "is_debug": node_definition.create_uid.has_group('base.group_no_one'),
                 "active_node_definition_id": node_definition.id,
+                "active_node_definition_uuid": node_definition.uuid,
                 "payload": payload
             }
 

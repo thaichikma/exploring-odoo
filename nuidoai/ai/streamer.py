@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -46,9 +46,9 @@ class Streamer:
         try:
             for hist in history:
                 if hist["role"] == "user":
-                    chitchat.chat_history.add_user_message(hist["originalMessage"])
+                    chitchat.chat_history.add_user_message(hist["message"])
                 elif hist["role"] == "assistant":
-                    chitchat.chat_history.add_assistant_message(hist["originalMessage"])
+                    chitchat.chat_history.add_assistant_message(hist["message"])
 
             chitchat.chat_history.add_user_message(message)
 

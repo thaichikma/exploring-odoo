@@ -34,7 +34,9 @@ export class SidebarChat extends AiSidebar {
         }
         else {
             if (this.state.isProcessing) {
-                this.update(message);
+                this.update({
+                    "text": message
+                });
             }
             else {
                 console.warn("Received stream while not processing: ", message, stop);
@@ -61,7 +63,7 @@ export class SidebarChat extends AiSidebar {
     async onSendMessage(message, history) {
         if (await this.isNodeDefinitionSet()) {
             // @ts-ignore
-            this.chat.chat(this.props.channel, message, history);
+            this.chat.chat(this.props.channel, message.text, history);
             return true;
         }
         else {

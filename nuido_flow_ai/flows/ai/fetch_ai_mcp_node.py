@@ -1,19 +1,15 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
-import logging
-
-_logger = logging.getLogger(__name__)
-
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 from autogen_ext.tools.mcp import StdioServerParams
 
 class FetchAiMcpNode(BaseNode):
-    def process(self, params):
+    def _process(self, params):
         mcp_server = StdioServerParams(command="uvx", args=["mcp-server-fetch"])
         return {
             "mcp_server": mcp_server

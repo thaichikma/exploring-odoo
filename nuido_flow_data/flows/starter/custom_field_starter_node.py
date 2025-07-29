@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -15,8 +15,8 @@ from odoo.addons.nuido_base.tools.function_tool import create_object
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 class CustomFieldStarterNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         model = self.definition["model"]
         field_name = self.definition["field_name"]

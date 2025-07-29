@@ -6,15 +6,13 @@
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 import logging
-
-_logger = logging.getLogger(__name__)
-
 import json
+
 from odoo import tools
 
-from autogen_core import CancellationToken, TRACE_LOGGER_NAME, EVENT_LOGGER_NAME
+from autogen_core import Image, CancellationToken, TRACE_LOGGER_NAME, EVENT_LOGGER_NAME
 from autogen_agentchat.base import TaskResult
-from autogen_agentchat.messages import TextMessage
+from autogen_agentchat.messages import MultiModalMessage, TextMessage
 from autogen_agentchat.agents import AssistantAgent
 
 from autogen_ext.tools.mcp import McpWorkbench
@@ -26,6 +24,10 @@ import markdown
 from markupsafe import Markup
 
 from .tools import get_chat_completion_client_node, get_tool_nodes, get_mcp_node
+from odoo.addons.nuido_flow.flows.tools.tools import get_default_context_for_eval
+
+from odoo.addons.nuido_flow.flows.tools.log_const import LOGGER_NAME
+_logger = logging.getLogger(LOGGER_NAME)
 
 autogen_logger = logging.getLogger(TRACE_LOGGER_NAME)
 autogen_logger.setLevel(logging.ERROR)
@@ -70,24 +72,49 @@ class AssistantAgentNode(BaseNode):
             'workbench': self.workbench,
         }
 
-    async def _do_ask_ai(self, user_message):
-        response = await self.agent.run(task=[TextMessage(content=user_message, source="user")], cancellation_token=CancellationToken())
-        return response
+    def _create_task(self, prompt):
+        task = None
+        if isinstance(prompt, str):
+            task = [TextMessage(content=prompt, source="user")]
+        elif isinstance(prompt, dict):
+            text = prompt["text"]
+            if "image" in prompt and prompt["image"] is not None:
+                base64_image = prompt["image"]
+                image = Image.from_base64(base64_image)
+                task = [MultiModalMessage(content=[text, image], source="user")]
+            else:
+                task = [TextMessage(content=text, source="user")]
+        return task
+
+    async def _do_ask_ai(self, prompt):
+        task = self._create_task(prompt)
+
+        if task is not None:
+            response = await self.agent.run(task=task, cancellation_token=CancellationToken())
+            return response
+
+        raise Exception("Unable to create task for AI agent.")
 
     async def _ask_ai(self, params):
         response = TaskResult(messages=[], stop_reason="None")
         try:
-            context = self.env.context
+            context = get_default_context_for_eval(self.env)
 
             variables = {}
             variables.update(**context)
             variables.update(**params)
-            message = process_template(self.definition["prompt"], variables)
+            prompt_def = process_template(self.definition["prompt"], variables)
+
+            try:
+                prompt = json.loads(prompt_def)
+            except:
+                _logger.debug(f"Unable to load prompt as json, it will be treated as regular string: {prompt_def}")
+                prompt = prompt_def
 
             if self.workbench is not None:
                 await self.workbench.start()
 
-            response = await self._do_ask_ai(message)
+            response = await self._do_ask_ai(prompt)
         except:
             _logger.error("Error processing message.", exc_info=True)
             response = TaskResult(messages=[], stop_reason="Error asking AI.")
@@ -98,8 +125,8 @@ class AssistantAgentNode(BaseNode):
 
         return response
 
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         res = run_async_function(self._ask_ai, params)
         result = ""

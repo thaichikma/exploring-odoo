@@ -88,6 +88,7 @@ If you find this useful, consider giving the repo a star ⭐️ — it helps kee
 | Nuido Flow Data      | nuido_flow_data      | Nuido Flow nodes for handling Odoo data.                   |
 | Nuido Flow Jinja     | nuido_flow_jinja     | Use Jinja in Nuido Flow.                                   |
 | Nuido Flow AI        | nuido_flow_ai        | AI nodes for Nuido Flow.                                   |
+| Nuido Flow AI Chat   | nuido_flow_ai_chat   | AI chatbot nodes for Nuido Flow.                           |
 | Nuido Flow Owly      | nuido_flow_owly      | Example addon demonstrating external trigger with webhook. |
 | Nuido Flow Network   | nuido_flow_network   | Nodes for sending/receiving data over network.             |
 | Nuido Flow Shopify   | nuido_flow_shopify   | Shopify integration using Nuido Flow.                      |
@@ -110,7 +111,7 @@ If you find this useful, consider giving the repo a star ⭐️ — it helps kee
 | &check; Demo app                                      |                                                      |                                  |
 
 ## Roadmap
-- [ ] Indicator for debugging/tracing purposes.
+- [ ] Indicator for debugging/tracing purposes (In progress).
   <details>
   <summary>Screenshot</summary>
   <img src="./doc/images/nuido-monitoring-process.png" />

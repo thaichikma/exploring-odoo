@@ -5,16 +5,11 @@
 #
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
-
-import logging
-
-_logger = logging.getLogger(__name__)
-
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 class ActiveDataNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         if ("active_ids" in self.env.context):
             domain = [("id", "in", self.env.context["active_ids"])]

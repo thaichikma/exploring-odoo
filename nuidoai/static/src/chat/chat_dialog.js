@@ -17,12 +17,12 @@ export class ChatDialog extends AiChatContainer {
         this.state = useState({
             isProcessing: false
         });
-        const aiBotStreamListener = ({ message, stop }) => {
+        const onAiMessage = ({ message, stop }) => {
             if (stop) {
                 this.state.isProcessing = false;
             }
             else {
-                if (this.state.isProcessing) {
+                if (this.isProcessing) {
                     this.update(message);
                 }
                 else {
@@ -33,10 +33,14 @@ export class ChatDialog extends AiChatContainer {
         // @ts-ignore
         this.busService = this.env.services.bus_service;
         // @ts-ignore
-        this.busService.subscribe(this.props.channel, aiBotStreamListener.bind(this));
+        this.busService.subscribe(this.props.channel, onAiMessage.bind(this));
     }
     update(message) {
-        super.update(message);
+        // @ts-ignore
+        this.props.bus.trigger(this.props.channel + "/message", { message: {
+                text: message,
+                attachments: []
+            } });
     }
     get isProcessing() {
         return this.state.isProcessing;
@@ -47,7 +51,7 @@ export class ChatDialog extends AiChatContainer {
     }
     onSendMessage(message, history) {
         // @ts-ignore
-        this.chat.testChat(this.props.agentDefId, this.props.channel, message, history);
+        this.chat.testChat(this.props.agentDefId, this.props.channel, message.text, history);
         return true;
     }
 }

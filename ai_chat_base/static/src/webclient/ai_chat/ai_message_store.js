@@ -1,12 +1,12 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 
-import { useEnv, useState, markup, reactive } from "@odoo/owl";
+import { useEnv, useState, reactive } from "@odoo/owl";
 
 DOMPurify.addHook('afterSanitizeAttributes', function (node) {
     if ('target' in node && node instanceof HTMLElement) {
@@ -36,6 +36,10 @@ export class AiMessageList {
         return message;
     }
 
+    _isString(variable) {
+        return typeof variable === "string" || variable instanceof String;
+    }
+
     _getMarked(){
         const mrk = new marked.Marked(
             markedHighlight.markedHighlight({
@@ -55,33 +59,34 @@ export class AiMessageList {
         this.messages = [];
     }
 
-    addMessage(role, message) {
+    add(role, content) {
         const mrk = this._getMarked();
-        const markedMessage = mrk.parse(message);
+        const markedText = mrk.parse(content.text);
 
         const avatarUrl = role === "assistant" ? this.assistantAvatarUrl : this.userAvatarUrl;
         const messageOwner = role === "assistant" ? this.assistantName : this.userName;
+
         const chatItem = {
             name: messageOwner,
             role: role,
             avatar: avatarUrl,
-            message: markup(DOMPurify.sanitize(markedMessage)),
-            originalMessage: message,
+            text: DOMPurify.sanitize(markedText),
+            content: content,
             isProcessing: false,
         };
         const length = this.messages.push(chatItem);
         return this.messages[length - 1];
     }
 
-    update(message, content){
+    update(chatItem, content){
         const mrk = this._getMarked();
 
-        const newOriginalMessage = message.originalMessage + content;
-        const htmlMessage = mrk.parse(newOriginalMessage, { breaks: true });
-        const newMessage = markup(DOMPurify.sanitize(htmlMessage));
+        const newMessageText = chatItem.content.text + content.text;
+        const htmlMessage = mrk.parse(newMessageText, { breaks: true });
+        const newMessage = DOMPurify.sanitize(htmlMessage);
 
-        message.message = newMessage;
-        message.originalMessage = newOriginalMessage;
+        chatItem.text = newMessage;
+        chatItem.content.text = newMessageText;
     }
 }
 
@@ -95,7 +100,7 @@ export function createAiMessageStore(name, userName, userAvatarUrl, assistantNam
     const initialAiMessages = JSON.parse(localStorage.getItem(name) || "[]");
 
     initialAiMessages.forEach(msg => {
-        msg.message = markup(DOMPurify.sanitize(msg.message));
+        msg.text = DOMPurify.sanitize(msg.text);
     });
 
     const aiMessagesStore = reactive(new AiMessageList(

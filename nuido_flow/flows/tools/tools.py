@@ -6,16 +6,32 @@
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
+import logging
+
+from odoo import SUPERUSER_ID
+from odoo.api import Environment
+from odoo.modules.registry import Registry
+
 from odoo.tools import safe_eval
 from odoo.tools.safe_eval import wrap_module
 
 from odoo.addons.nuido_base.tools.function_tool import create_object
-from ..core.base_node import FlowNode
 
+from .log_const import LOGGER_NAME
+
+_logger = logging.getLogger(LOGGER_NAME)
 html = wrap_module(__import__('html'), ['escape'])
 
+def send_monitoring_notification(env, type, context):
+    try:
+        with Registry(env.cr.dbname).cursor() as cr:
+            my_env = Environment(cr, SUPERUSER_ID, {})
+            my_env['bus.bus']._sendone('broadcast', type, context)
+    except Exception as e:
+        _logger.debug(f"Unable to send {type} notification.", e)
+
 def run_nodes(env, create_function_registry, definitions, start_node_def, start_params):
-    node: FlowNode | None = create_object(env, create_function_registry, definitions, start_node_def["type"], start_node_def)
+    node = create_object(env, create_function_registry, definitions, start_node_def["type"], start_node_def)
     node_def = start_node_def
     params = start_params
     while node is not None:
@@ -41,6 +57,7 @@ def get_default_context_for_eval(env):
         'user': env.user,
         'html': html
     }
+
     if "start_params" in env.context:
         context['start_params'] = env.context["start_params"]
     if "run_params" in env.context:
@@ -49,6 +66,8 @@ def get_default_context_for_eval(env):
         context['payload'] = env.context["payload"]
     if "active_node_definition_id" in env.context:
         context['active_node_definition_id'] = env.context["active_node_definition_id"]
+    if "active_node_definition_uuid" in env.context:
+        context['active_node_definition_uuid'] = env.context["active_node_definition_uuid"]
 
     return context
 

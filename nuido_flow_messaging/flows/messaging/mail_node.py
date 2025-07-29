@@ -8,14 +8,15 @@
 
 import logging
 
-_logger = logging.getLogger(__name__)
-
 from odoo.tools.safe_eval import wrap_module
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
+from odoo.addons.nuido_flow.flows.tools.log_const import LOGGER_NAME
+_logger = logging.getLogger(LOGGER_NAME)
+
 class MailNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         try:
             node_def_id = self.env.context["active_node_definition_id"]

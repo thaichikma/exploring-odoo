@@ -1,8 +1,8 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
@@ -38,7 +38,7 @@ class NuidoAiController(http.Controller):
         env = request.env
 
         node_definition = env["nuidoai.node.definition"].browse(agent_def_id)
-        node_definition_def = node_definition.process_node_definition(node_definition["raw"])
+        _, node_definition_def = node_definition.process_node_definition(node_definition["raw"])
 
         chitchat = ChitChat(env, node_definition_def)
         if chitchat.mode != "None":

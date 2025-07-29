@@ -18,6 +18,7 @@
     "version": "18.0.1.0.0",
     "depends": ["base", "web", "nuido", "nuido_base"],
     "data": [
+            "data/nuido_flow_data.xml",
             "security/ir.model.access.csv",
             "views/nuido_flow_views.xml",
             "data/nuido_flow_registry.xml",

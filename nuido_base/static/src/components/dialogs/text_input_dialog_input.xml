@@ -13,7 +13,7 @@ DO NOT USE IT IN PRODUCTION.
         <div class="mb-2" >
             <label t-attf-id="label-{{props.id}}" t-attf-for="text-{{props.id}}"><t t-out="props.label"/></label>
             <div class="input-group">
-                <input class="form-control border-primary" readonly="1" t-attf-id="text-{{props.id}}" 
+                <input class="form-control border-primary" readonly="1" t-attf-id="text-{{props.id}}"
                     t-attf-type="{{ props.hideValue ? 'password' : 'text' }}" t-att-value="trimmedText"></input>
                 <button class="btn btn-primary" type="button"  t-on-click="showDialog">
                     <i t-attf-class="icon fa fa-ellipsis-h fa-lg align-self-center"></i>

@@ -8,16 +8,17 @@
 
 import logging
 
-_logger = logging.getLogger(__name__)
-
 from odoo.tools import safe_eval
 
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 from odoo.addons.nuido_flow.flows.tools.tools import get_default_context_for_eval, get_active_record_info
 
+from odoo.addons.nuido_flow.flows.tools.log_const import LOGGER_NAME
+_logger = logging.getLogger(LOGGER_NAME)
+
 class ReferenceMapNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
 
         context = get_default_context_for_eval(self.env)
         if params is not None:

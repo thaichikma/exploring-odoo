@@ -1,22 +1,23 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
 import logging
-
-_logger = logging.getLogger(__name__)
 
 from .base_node import BaseNode
 from ..tools.tools import get_default_context_for_eval, get_active_record_info
 
 from odoo.tools import safe_eval
 
+from ..tools.log_const import LOGGER_NAME
+_logger = logging.getLogger(LOGGER_NAME)
+
 class ConditionalNode(BaseNode):
-    def process(self, params):
+    def _process(self, params):
         context = get_default_context_for_eval(self.env)
         if params is not None:
             context['params'] = params

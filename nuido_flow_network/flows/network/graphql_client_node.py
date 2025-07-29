@@ -1,29 +1,31 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
 import logging
 
-_logger = logging.getLogger(__name__)
-
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
-from gql.transport.requests import log as requests_logger
-from gql.transport.websockets import log as websockets_logger
-requests_logger.setLevel(logging.WARNING)
-websockets_logger.setLevel((logging.WARNING))
 
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 from .tools import get_header_nodes, get_graphql_variable_nodes
 
+from odoo.addons.nuido_flow.flows.tools.log_const import LOGGER_NAME
+from gql.transport.requests import log as requests_logger
+from gql.transport.websockets import log as websockets_logger
+
+_logger = logging.getLogger(LOGGER_NAME)
+requests_logger.setLevel(logging.WARNING)
+websockets_logger.setLevel((logging.WARNING))
+
 class GraphQlClientNode(BaseNode):
-    def process(self, params) -> any:
-        super().process(params)
+    def _process(self, params) -> any:
+        super()._process(params)
 
         header_nodes = get_header_nodes(self)
         variable_nodes = get_graphql_variable_nodes(self)

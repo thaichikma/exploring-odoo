@@ -33,8 +33,12 @@ export class OpenAiChatCompletionServiceModel extends SectionedNodeWithRoleModel
         sectionId = uuidv4();
         this.addSection(sectionId, DropdownSection.name, {
             label: "Model",
-            default: "qwen2.5-7b-instruct",
+            default: "google/gemma-3-4b",
             options: [
+                {
+                    name: "Gemma 3",
+                    value: "google/gemma-3-4b"
+                },
                 {
                     name: "QWen 2.5 7b Instruct",
                     value: "qwen2.5-7b-instruct"

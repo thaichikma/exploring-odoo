@@ -1,8 +1,8 @@
 // THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-// 
+//
 // THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 // DO NOT USE IT IN PRODUCTION.
 import { registry } from "@web/core/registry";
@@ -13,21 +13,24 @@ export class NodeModel {
     icon;
     nodeType;
     vprops;
+    cssClass;
     inPorts;
     outPorts;
     auxInPorts;
     auxOutPorts;
-    constructor(id, icon, title, nodeType, left, top, width, height) {
+    constructor(id, icon, title, nodeType, left, top, options = {}) {
         this.id = id;
         this.icon = icon;
         this.title = title;
         this.nodeType = nodeType;
+        const { width, height, cssClass } = options;
         this.vprops = {
             left: left,
             top: top,
             width: width,
             height: height
         };
+        this.cssClass = cssClass ?? "";
         this.inPorts = [];
         this.outPorts = [];
         this.auxInPorts = [];

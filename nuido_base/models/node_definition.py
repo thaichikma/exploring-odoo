@@ -1,13 +1,10 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
-
-import logging
-_logger = logging.getLogger(__name__)
 
 from odoo import models, fields, api
 
@@ -39,7 +36,7 @@ class NodeDefinition(models.Model):
 
     def action_process_node_definitions(self):
         for rec in self.browse(self.env.context["active_ids"]):
-            infos = self.process_node_definition(rec.raw)
+            _, infos = self.process_node_definition(rec.raw)
             rec.definition = infos
             rec.is_processed = True
             self._process_record(rec)
@@ -51,4 +48,4 @@ class NodeDefinition(models.Model):
         pass
 
     def process_node_definition(self, raw):
-        return None
+        return None, None

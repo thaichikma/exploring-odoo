@@ -18,6 +18,9 @@ DO NOT USE IT IN PRODUCTION.
                 <button t-on-click.stop.prevent="onProcessButtonClick" class="btn btn-primary text-danger">
                     <i class="fa fa-check"/>
                 </button>
+                <button t-on-click.stop.prevent="onResetProcessingStateButtonClick" class="btn btn-primary text-danger">
+                    <i class="fa fa-backward"/>
+                </button>
             </div>
         </xpath>
     </t>

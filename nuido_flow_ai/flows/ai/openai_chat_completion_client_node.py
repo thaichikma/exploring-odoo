@@ -14,8 +14,8 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 class OpenAiChatCompletionClientNode(BaseNode):
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
         client = None
         if params["is_structured"]:
             response_format = {

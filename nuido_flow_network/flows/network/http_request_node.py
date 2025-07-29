@@ -1,14 +1,12 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
 
 import logging
-
-_logger = logging.getLogger(__name__)
 
 import requests
 import json
@@ -21,9 +19,12 @@ from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 from .tools import get_header_nodes
 
+from odoo.addons.nuido_flow.flows.tools.log_const import LOGGER_NAME
+_logger = logging.getLogger(LOGGER_NAME)
+
 class HttpRequestNode(BaseNode):
-    def process(self, params) -> any:
-        super().process(params)
+    def _process(self, params) -> any:
+        super()._process(params)
 
         context = get_default_context_for_eval(self.env)
         if params is not None:

@@ -1,15 +1,10 @@
 # THIS FILE IS A PART OF PUBLIC REPOSITORY https://github.com/yonitjio/exploring-odoo
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-# 
+#
 # THIS SOFTWARE IS EXPERIMENTAL AND FOR EDUCATIONAL PURPOSE ONLY.
 # DO NOT USE IT IN PRODUCTION.
-
-import logging
-
-_logger = logging.getLogger(__name__)
-
 from dateutil.relativedelta import relativedelta
 from datetime import datetime as dt, timedelta
 from odoo.tools import date_utils as dtu
@@ -63,8 +58,8 @@ class OnScheduleTriggerNode(BaseNode):
                 'nextcall': nextcall
             })
 
-    def process(self, params):
-        super().process(params)
+    def _process(self, params):
+        super()._process(params)
         self._update_cron()
 
         return params

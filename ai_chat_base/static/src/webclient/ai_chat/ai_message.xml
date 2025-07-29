@@ -20,7 +20,14 @@ DO NOT USE IT IN PRODUCTION.
                     </div>
                 </div>
                 <div class="ai-chat-message-text">
-                    <t t-out="props.message"/>
+                    <t t-out="messageText"/>
+                </div>
+                <div t-if="hasAttachments" class="ai-chat-message-attachment-row">
+                    <t t-foreach="attachments" t-as="att" t-key="att_index" >
+                        <div class="ai-chat-message-attachment-container">
+                            <img class="ai-chat-message-attachment-thumbnail" t-att-src="getImageSource(att)"/>
+                        </div>
+                    </t>
                 </div>
             </div>
         </div>

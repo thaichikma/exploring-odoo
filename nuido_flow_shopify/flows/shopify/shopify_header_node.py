@@ -13,8 +13,8 @@ import base64
 from odoo.addons.nuido_flow.flows.core.base_node import BaseNode
 
 class ShopifyHeaderNode(BaseNode):
-    def process(self, params) -> any:
-        super().process(params)
+    def _process(self, params) -> any:
+        super()._process(params)
 
         secret = str(self.definition["secret"]).encode()
 
